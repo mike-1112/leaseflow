@@ -1,4 +1,7 @@
 class LeadsController < ApplicationController
+  # Protect from CSRF attacks (enabled by default)
+  protect_from_forgery with: :exception
+
   # Show the sign-in form
   def new
     @lead = Lead.new
@@ -7,22 +10,26 @@ class LeadsController < ApplicationController
   # Handle form submission
   def create
     @lead = Lead.new(lead_params)
+
     if @lead.save
-      # For now we’ll just redirect—email later
-      redirect_to signed_up_path(property: @lead.property)
+      # Send thank-you email asynchronously
+      LeadMailer.with(lead: @lead).thank_you_email.deliver_later
+
+      redirect_to signed_up_path(property: @lead.property), notice: "Thanks! Check your email next."
     else
+      flash.now[:alert] = "Please fix the errors below."
       render :new, status: :unprocessable_entity
     end
   end
 
   # Thank-you page
   def thanks
-    # property comes from params so we can personalize message
     @property = params[:property]
   end
 
   private
 
+  # Strong parameters: only allow specific, permitted fields
   def lead_params
     params.require(:lead).permit(:full_name, :email, :phone, :property)
   end
