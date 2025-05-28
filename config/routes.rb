@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Sign-in form
+  get  '/signin', to: 'leads#new',   as: :signin
+  # Form POSTs here
+  post '/leads',  to: 'leads#create'
+  # Thank-you page after create
+  get  '/signed_up', to: 'leads#thanks', as: :signed_up
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # You can set root to sign-in for now:
+  root to: 'leads#new'
 end
