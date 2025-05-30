@@ -1,0 +1,5 @@
+<h1 class="text-2xl font-bold mb-6">Incoming Leads</h1>
+
+<%= turbo_frame_tag "leads_list" do %>
+  <%= render partial: "lead", collection: @leads, as: :lead %>
+<% end %>

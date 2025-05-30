@@ -1,12 +1,22 @@
 Rails.application.routes.draw do
+  # Devise for Agent authentication
   devise_for :agents
-  # Sign-in form
-  get  '/signin', to: 'leads#new',   as: :signin
-  # Form POSTs here
-  post '/leads',  to: 'leads#create'
-  # Thank-you page after create
-  get  '/signed_up', to: 'leads#thanks', as: :signed_up
 
-  # You can set root to sign-in for now:
-  root to: 'leads#new'
+  # Public-facing lead routes
+  get  '/signin',    to: 'leads#new',    as: :signin
+  post '/leads',     to: 'leads#create'
+  get  '/signed_up', to: 'leads#thanks',  as: :signed_up
+
+  # Dashboard route (you generated a stub)
+  get 'dashboard/index'
+
+  # Authenticated root → dashboard
+  authenticate :agent do
+    root to: 'dashboard#index', as: :authenticated_root
+  end
+
+  # Unauthenticated users → sign in
+  unauthenticated do
+    root to: redirect('/agents/sign_in')
+  end
 end

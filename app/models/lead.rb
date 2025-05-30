@@ -1,4 +1,6 @@
 class Lead < ApplicationRecord
+    after_create_commit -> { broadcast_prepend_to "leads_list" }
+    
     # VALIDATIONS
     validates :full_name,
       presence: true,

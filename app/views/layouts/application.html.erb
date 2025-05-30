@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html>
+<!DOCTYPE html>
+<html>
   <head>
-    <title>Leaseflow</title>
+    <title>LeaseFlow</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <!-- Use the ESBuild‐compiled JS bundle instead of importmap -->
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
+
+  <body class="flex flex-col min-h-screen">
+    <nav class="bg-gray-50 px-6 py-4 flex justify-between items-center">
+      <%= link_to "LeaseFlow", root_path, class: "font-bold text-xl" %>
+
+      <div>
+        <% if agent_signed_in? %>
+          <span class="mr-4 text-sm">Signed in as <%= current_agent.email %></span>
+          <%= link_to "Dashboard",
+                      authenticated_root_path,
+                      class: "mr-4 text-blue-600 hover:underline" %>
+
+          <%#-- fallback form button that always sends DELETE --%>
+          <%= button_to "Sign Out",
+                        destroy_agent_session_path,
+                        method: :delete,
+                        form: { class: "inline" },
+                        class: "text-red-600 hover:underline bg-transparent p-0 align-baseline" %>
+        <% else %>
+          <%= link_to "Sign In", new_agent_session_path, class: "text-blue-600 hover:underline" %>
+        <% end %>
+      </div>
+    </nav>
+
+    <main class="flex-grow">
+      <%= yield %>
+    </main>
   </body>
 </html>

@@ -1,61 +1,45 @@
-<!-- app/views/leads/new.html.erb -->
-<div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
-  <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
-    <h2 class="text-3xl font-bold text-primary-dark text-center mb-6">Inspect & Apply</h2>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Inspect & Apply</h1>
 
-    <% if flash[:alert] %>
-      <div class="mb-4 p-3 bg-red-100 text-red-800 rounded">
-        <%= flash[:alert] %>
-      </div>
-    <% end %>
-
-    <%= form_with model: @lead, url: leads_path, local: true, class: "space-y-5" do |f| %>
-      <% if @lead.errors.any? %>
-        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded">
-          <h3 class="font-medium text-red-700 mb-2">
-            <%= pluralize(@lead.errors.count, "error") %> prevented sign-in:
-          </h3>
-          <ul class="list-disc list-inside text-red-600">
-            <% @lead.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
+    <%= form_with model: @lead, url: leads_path, local: true do |f| %>
+      <div class="space-y-4">
+        <div>
+          <%= f.label :full_name, "Full Name", class: "block text-sm font-medium" %>
+          <%= f.text_field :full_name,
+                placeholder: "John Doe",
+                required: true,
+                class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
         </div>
-      <% end %>
 
-      <div>
-        <%= f.label :full_name, "Full Name", class: "block text-sm font-medium text-gray-700" %>
-        <%= f.text_field :full_name, placeholder: "John Doe", required: true,
-              class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg \
-                     bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary" %>
+        <div>
+          <%= f.label :email, "Email Address", class: "block text-sm font-medium" %>
+          <%= f.email_field :email,
+                placeholder: "you@example.com",
+                required: true,
+                class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+
+        <div>
+          <%= f.label :phone, "Mobile Number", class: "block text-sm font-medium" %>
+          <%= f.telephone_field :phone,
+                placeholder: "0412 345 678",
+                required: true,
+                class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+
+        <div>
+          <%= f.label :property, "Property Address or ID", class: "block text-sm font-medium" %>
+          <%= f.text_field :property,
+                placeholder: "123 Main St",
+                required: true,
+                class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
       </div>
 
-      <div>
-        <%= f.label :email, "Email Address", class: "block text-sm font-medium text-gray-700" %>
-        <%= f.email_field :email, placeholder: "you@example.com", required: true,
-              class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg \
-                     bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary" %>
-      </div>
-
-      <div>
-        <%= f.label :phone, "Mobile Number", class: "block text-sm font-medium text-gray-700" %>
-        <%= f.telephone_field :phone, placeholder: "0412 345 678", required: true,
-              class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg \
-                     bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary" %>
-      </div>
-
-      <div>
-        <%= f.label :property, "Property Address or ID", class: "block text-sm font-medium text-gray-700" %>
-        <%= f.text_field :property, placeholder: "123 Main St", required: true,
-              class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg \
-                     bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary" %>
-      </div>
-
-      <!-- The submit button -->
-      <div>
-        <%= f.submit "Sign In", 
-              class: "w-full py-3 bg-primary hover:bg-primary-dark text-white font-medium \
-                     rounded-lg shadow transition-colors" %>
+      <div class="mt-6">
+        <%= f.submit "Submit Application",
+              class: "w-full py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700" %>
       </div>
     <% end %>
   </div>
