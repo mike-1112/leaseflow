@@ -13,7 +13,8 @@ class LeadsController < ApplicationController
 
     if @lead.save
       # Send thank-you email asynchronously
-      LeadMailer.with(lead: @lead).thank_you_email.deliver_later
+      #LeadMailer.with(lead: @lead).thank_you_email.deliver_later
+      LeadMailer.with(lead: @lead).thank_you_email.deliver_now
 
       redirect_to signed_up_path(property: @lead.property), notice: "Thanks! Check your email next."
     else

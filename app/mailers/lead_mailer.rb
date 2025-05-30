@@ -1,5 +1,5 @@
 class LeadMailer < ApplicationMailer
-  default from: "no-reply@leaseflow.local"
+  default from: ENV.fetch("SENDGRID_FROM")
 
   def thank_you_email
     @lead = params[:lead]

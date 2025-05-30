@@ -57,8 +57,38 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # Use Letter Opener to open emails in the browser
-  config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.perform_deliveries = true
+  #config.action_mailer.delivery_method = :letter_opener
+  #config.action_mailer.perform_deliveries = true
+
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.smtp_settings = {
+      address: "smtp.sendgrid.net",
+      port:    587,
+      domain:  "trippysrilanka.com",
+      user_name: ENV.fetch("SENDGRID_USERNAME"),
+      password:  ENV.fetch("SENDGRID_API_KEY"),
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+    config.action_mailer.default_options = { from: ENV.fetch("SENDGRID_FROM") }
+
+
+    # Send real emails in dev via SendGrid SMTP
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address:              "smtp.sendgrid.net",
+      port:                 587,
+      domain:               "trippysrilanka.com",
+      user_name:            ENV.fetch("SENDGRID_USERNAME"),
+      password:             ENV.fetch("SENDGRID_API_KEY"),
+      authentication:       :plain,
+      enable_starttls_auto: true
+    }
+    config.action_mailer.default_options = {
+      from: ENV.fetch("SENDGRID_FROM")
+    }
+  
 
   # Host for URL helpers in mailer (adjust port if needed)
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
