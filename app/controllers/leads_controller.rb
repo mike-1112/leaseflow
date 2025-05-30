@@ -38,4 +38,11 @@ class LeadsController < ApplicationController
   def lead_params
     params.require(:lead).permit(:full_name, :email, :phone, :property)
   end
+
+  # PATCH /leads/:id/mark_contacted
+  def mark_contacted
+    @lead = Lead.find(params[:id])
+    @lead.update!(contacted: true)
+    head :no_content
+  end
 end

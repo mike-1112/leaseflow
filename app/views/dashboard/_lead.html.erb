@@ -1,18 +1,31 @@
-<div id="lead_<%= lead.id %>" class="p-4 border-b hover:bg-gray-50">
+<div
+  data-controller="lead"
+  data-lead-id-value="<%= lead.id %>"
+  id="lead_<%= lead.id %>"
+  class="p-4 border-b hover:bg-gray-50"
+>
   <div class="flex justify-between">
     <div>
       <p class="font-semibold"><%= lead.full_name %></p>
-      <p class="text-sm text-gray-600"><%= lead.email %> • <%= lead.phone %></p>
+      <p class="text-sm text-gray-600">
+        <%= lead.email %> • <%= lead.phone %>
+      </p>
     </div>
-    <div class="text-xs text-gray-500"><%= lead.created_at.strftime("%-d %b %Y %l:%M %P") %></div>
+
+    <div class="text-xs text-gray-500">
+      <%= lead.created_at.strftime("%-d %b %Y %l:%M %P") %>
+    </div>
   </div>
+
   <div class="mt-2">
     <span class="inline-block bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
       <%= lead.property %>
     </span>
-    <button data-action="click->lead#markContacted"
-            data-lead-id="<%= lead.id %>"
-            class="ml-4 text-sm text-green-600 hover:underline">
+
+    <button
+      data-action="click->lead#markContacted"
+      class="ml-4 text-sm text-green-600 hover:underline"
+    >
       Mark Contacted
     </button>
   </div>

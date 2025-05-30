@@ -13,6 +13,13 @@ Rails.application.routes.draw do
   # Authenticated root → dashboard
   authenticate :agent do
     root to: 'dashboard#index', as: :authenticated_root
+
+  resources :leads, only: [:new, :create] do
+    member do
+      patch :mark_contacted
+    end
+  end
+    
   end
 
   # Unauthenticated users → sign in
