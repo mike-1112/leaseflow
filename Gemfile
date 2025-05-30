@@ -62,6 +62,7 @@ group :development do
   # gem "spring"
 end
 
+gem "importmap-rails"
 
 gem "twilio-ruby", "~> 7.6"
 
