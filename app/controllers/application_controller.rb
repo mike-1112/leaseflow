@@ -1,2 +1,5 @@
 class ApplicationController < ActionController::Base
-end
+    # Require an authenticated Agent for every page
+    before_action :authenticate_agent!
+  end
+  

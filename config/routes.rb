@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :agents
   # Sign-in form
   get  '/signin', to: 'leads#new',   as: :signin
   # Form POSTs here

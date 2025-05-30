@@ -64,3 +64,5 @@ end
 
 
 gem "twilio-ruby", "~> 7.6"
+
+gem "devise", "~> 4.9"
