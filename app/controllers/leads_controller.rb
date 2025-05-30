@@ -15,12 +15,16 @@ class LeadsController < ApplicationController
       # Send thank-you email asynchronously
       #LeadMailer.with(lead: @lead).thank_you_email.deliver_later
       LeadMailer.with(lead: @lead).thank_you_email.deliver_now
-
-      redirect_to signed_up_path(property: @lead.property), notice: "Thanks! Check your email next."
+      TwilioService.new.send_sms(
+        to:   @lead.phone,
+        body: "Thanks for inspecting #{@lead.property}! " \
+              "Complete your application: #{signed_up_url(property: @lead.property)}"
+      )
+      redirect_to signed_up_path(property: @lead.property), notice: "Check your email & SMS!"
     else
-      flash.now[:alert] = "Please fix the errors below."
-      render :new, status: :unprocessable_entity
+      …
     end
+    
   end
 
   # Thank-you page

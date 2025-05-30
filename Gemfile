@@ -62,3 +62,5 @@ group :development do
   # gem "spring"
 end
 
+
+gem "twilio-ruby", "~> 7.6"
