@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
+console.log("Stimulus lead controller loaded!");
+
 export default class extends Controller {
   static values = { id: Number };
 
