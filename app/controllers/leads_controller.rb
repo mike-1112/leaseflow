@@ -42,7 +42,8 @@ class LeadsController < ApplicationController
   # PATCH /leads/:id/mark_contacted
   def mark_contacted
     @lead = Lead.find(params[:id])
-    @lead.update!(contacted: true)
+    #@lead.update!(contacted: true)
+    lead.update!(thank_you_sent: true)
     head :no_content
   end
 end
