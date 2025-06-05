@@ -1,6 +1,6 @@
-import { Controller } from "@hotwired/stimulus";
-
 console.log("Stimulus lead controller loaded!");
+
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static values = { id: Number };
