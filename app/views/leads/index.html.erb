@@ -1,0 +1,59 @@
+<%# Dashboard: Uncontacted vs. Contacted Leads with Search %>
+
+<div class="max-w-4xl mx-auto py-6">
+  <h1 class="text-2xl font-bold mb-4">Leads Dashboard</h1>
+
+  <div class="mb-6">
+    <%= form_with url: leads_path, method: :get, local: true, class: "flex gap-2" do |f| %>
+      <%= f.text_field :q,
+            value: params[:q].to_s,
+            class: "border rounded px-3 py-2 flex-grow",
+            placeholder: "Search by name, email, or property…" %>
+
+      <% if params[:q].present? %>
+        <%= link_to "Clear",
+              leads_path,
+              class: "bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" %>
+      <% end %>
+
+      <%= f.submit "Search",
+            class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+    <% end %>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- Uncontacted Leads Section -->
+    <div class="flex-1">
+      <h2 class="text-lg font-semibold mb-2">Uncontacted Leads</h2>
+      <div
+        id="uncontacted-leads"
+        data-controller="lead-list"
+        data-lead-list-target="uncontacted"
+        class="space-y-2"
+      >
+        <% if @uncontacted_leads.any? %>
+          <%= render partial: "lead", collection: @uncontacted_leads, as: :lead %>
+        <% else %>
+          <div class="text-gray-500 italic py-6">No uncontacted leads</div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Contacted Leads Section -->
+    <div class="flex-1">
+      <h2 class="text-lg font-semibold mb-2">Contacted Leads</h2>
+      <div
+        id="contacted-leads"
+        data-controller="lead-list"
+        data-lead-list-target="contacted"
+        class="space-y-2"
+      >
+        <% if @contacted_leads.any? %>
+          <%= render partial: "lead", collection: @contacted_leads, as: :lead %>
+        <% else %>
+          <div class="text-gray-500 italic py-6">No contacted leads yet</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

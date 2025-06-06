@@ -1,58 +1,67 @@
 class LeadsController < ApplicationController
-  # Protect from CSRF attacks (enabled by default)
-  protect_from_forgery with: :exception
+  before_action :authenticate_agent!, except: [:new, :create, :thanks]
+  before_action :set_lead, only: [:show, :mark_contacted, :mark_uncontacted, :send_email, :send_sms]
 
-  # Show the sign-in form
-  def new
-    @lead = Lead.new
-  end
+  # GET /leads
+  def index
+    query = params[:q].to_s.strip.downcase
 
-  # Handle form submission
-  def create
-    @lead = Lead.new(lead_params)
-
-    if @lead.save
-      # Send thank-you email asynchronously
-      #LeadMailer.with(lead: @lead).thank_you_email.deliver_later
-      LeadMailer.with(lead: @lead).thank_you_email.deliver_now
-      TwilioService.new.send_sms(
-        to:   @lead.phone,
-        body: "Thanks for inspecting #{@lead.property}! " \
-              "Complete your application: #{signed_up_url(property: @lead.property)}"
-      )
-      redirect_to signed_up_path(property: @lead.property), notice: "Check your email & SMS!"
+    if query.present?
+      @uncontacted_leads = Lead.where(contacted_at: nil)
+        .where("LOWER(full_name) LIKE :q OR LOWER(email) LIKE :q OR LOWER(property) LIKE :q", q: "%#{query}%")
+        .order(created_at: :desc)
+      @contacted_leads = Lead.where.not(contacted_at: nil)
+        .where("LOWER(full_name) LIKE :q OR LOWER(email) LIKE :q OR LOWER(property) LIKE :q", q: "%#{query}%")
+        .order(created_at: :desc)
     else
-      …
+      @uncontacted_leads = Lead.where(contacted_at: nil).order(created_at: :desc)
+      @contacted_leads = Lead.where.not(contacted_at: nil).order(created_at: :desc)
     end
-    
   end
 
-  # Thank-you page
-  def thanks
-    @property = params[:property]
+  # GET /leads/:id
+  def show
   end
 
   # PATCH /leads/:id/mark_contacted
   def mark_contacted
-    @lead = Lead.find(params[:id])
-    #@lead.update!(contacted: true)
-    lead.update!(thank_you_sent: true)
+    @lead.update(contacted_at: Time.current)
     head :no_content
   end
 
-  # app/controllers/leads_controller.rb
-  def toggle_contacted
-    @lead = Lead.find(params[:id])
-    @lead.contacted = !@lead.contacted
-    @lead.save!
-    render json: { contacted: @lead.contacted }
+  # PATCH /leads/:id/mark_uncontacted
+  def mark_uncontacted
+    @lead.update(contacted_at: nil)
+    head :no_content
   end
+
+  # POST /leads/:id/send_email
+  def send_email
+    begin
+      LeadMailer.quick_message(@lead).deliver_later
+      render json: { status: "ok" }
+    rescue => e
+      logger.error e.message
+      render json: { status: "error", message: e.message }, status: :internal_server_error
+    end
+  end
+
+  # POST /leads/:id/send_sms
+  def send_sms
+    begin
+      TwilioService.send_lead_sms(@lead)
+      render json: { status: "ok" }
+    rescue => e
+      logger.error e.message
+      render json: { status: "error", message: e.message }, status: :internal_server_error
+    end
+  end
+
+  # new, create, thanks unchanged...
 
   private
 
-  # Strong parameters: only allow specific, permitted fields
-  def lead_params
-    params.require(:lead).permit(:full_name, :email, :phone, :property)
+  def set_lead
+    @lead = Lead.find(params[:id])
   end
-
 end
