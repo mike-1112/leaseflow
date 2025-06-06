@@ -1,9 +1,9 @@
 <%# Renders a single Lead row with actions for email/SMS contact %>
 <div
-  class="bg-white p-4 rounded shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-gray-200"
-  id="lead-<%= lead.id %>"
-  data-lead-id="<%= lead.id %>"
   data-controller="lead"
+  data-lead-id-value="<%= lead.id %>"
+  id="lead_<%= lead.id %>"
+  class="bg-white p-4 rounded shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-gray-200 <%= 'opacity-50 line-through' if lead.contacted_at %>"
 >
   <div class="flex-1 min-w-0">
     <div class="font-semibold text-gray-900 truncate">
@@ -18,15 +18,26 @@
         &nbsp;|&nbsp; <strong>Property:</strong> <%= lead.property %>
       <% end %>
     </div>
-    <% if lead.message.present? %>
-      <div class="mt-1 text-gray-700 text-xs"><%= truncate(lead.message, length: 120) %></div>
-    <% end %>
     <% if lead.created_at %>
-      <div class="text-gray-400 text-xs mt-1">Submitted <%= time_ago_in_words(lead.created_at) %> ago</div>
+      <div class="text-gray-400 text-xs mt-1">
+        Submitted <%= time_ago_in_words(lead.created_at) %> ago
+      </div>
     <% end %>
     <% if lead.contacted_at %>
-      <div class="text-green-600 text-xs mt-1 font-medium">Contacted <%= time_ago_in_words(lead.contacted_at) %> ago</div>
+      <div class="text-green-600 text-xs mt-1 font-medium">
+        Contacted <%= time_ago_in_words(lead.contacted_at) %> ago
+      </div>
     <% end %>
+    
+    <div class="mt-2">
+      <button
+        data-lead-target="button"
+        data-action="click->lead#markContacted"
+        class="text-sm text-green-600 hover:underline"
+      >
+        <%= lead.contacted_at ? "Mark as NOT contacted" : "Mark as contacted" %>
+      </button>
+    </div>
   </div>
 
   <div class="flex flex-row gap-2 mt-2 md:mt-0">
