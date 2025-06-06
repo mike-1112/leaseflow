@@ -32,13 +32,6 @@ class LeadsController < ApplicationController
     @property = params[:property]
   end
 
-  private
-
-  # Strong parameters: only allow specific, permitted fields
-  def lead_params
-    params.require(:lead).permit(:full_name, :email, :phone, :property)
-  end
-
   # PATCH /leads/:id/mark_contacted
   def mark_contacted
     @lead = Lead.find(params[:id])
@@ -46,4 +39,20 @@ class LeadsController < ApplicationController
     lead.update!(thank_you_sent: true)
     head :no_content
   end
+
+  # app/controllers/leads_controller.rb
+  def toggle_contacted
+    @lead = Lead.find(params[:id])
+    @lead.contacted = !@lead.contacted
+    @lead.save!
+    render json: { contacted: @lead.contacted }
+  end
+
+  private
+
+  # Strong parameters: only allow specific, permitted fields
+  def lead_params
+    params.require(:lead).permit(:full_name, :email, :phone, :property)
+  end
+
 end

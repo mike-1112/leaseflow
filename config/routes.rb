@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   resources :leads, only: [:new, :create] do
     member do
+      patch :toggle_contacted
       patch :mark_contacted
     end
   end

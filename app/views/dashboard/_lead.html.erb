@@ -2,7 +2,7 @@
   data-controller="lead"
   data-lead-id-value="<%= lead.id %>"
   id="lead_<%= lead.id %>"
-  class="p-4 border-b hover:bg-gray-50"
+  class="p-4 border-b hover:bg-gray-50 <%= 'opacity-50 line-through' if lead.contacted %>"
 >
   <div class="flex justify-between">
     <div>
@@ -23,10 +23,11 @@
     </span>
 
     <button
+      data-lead-target="button"
       data-action="click->lead#markContacted"
       class="ml-4 text-sm text-green-600 hover:underline"
     >
-      Mark Contacted
+      <%= lead.contacted ? "Mark as NOT contacted" : "Mark as contacted" %>
     </button>
   </div>
 </div>
