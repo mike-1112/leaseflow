@@ -1,33 +1,49 @@
+<%# Renders a single Lead row with actions for email/SMS contact %>
 <div
+  class="bg-white p-4 rounded shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-gray-200"
+  id="lead-<%= lead.id %>"
+  data-lead-id="<%= lead.id %>"
   data-controller="lead"
-  data-lead-id-value="<%= lead.id %>"
-  id="lead_<%= lead.id %>"
-  class="p-4 border-b hover:bg-gray-50 <%= 'opacity-50 line-through' if lead.contacted %>"
 >
-  <div class="flex justify-between">
-    <div>
-      <p class="font-semibold"><%= lead.full_name %></p>
-      <p class="text-sm text-gray-600">
-        <%= lead.email %> • <%= lead.phone %>
-      </p>
+  <div class="flex-1 min-w-0">
+    <div class="font-semibold text-gray-900 truncate">
+      <%= lead.name.presence || "(No Name)" %>
     </div>
-
-    <div class="text-xs text-gray-500">
-      <%= lead.created_at.strftime("%-d %b %Y %l:%M %P") %>
+    <div class="text-gray-600 text-sm truncate">
+      <strong>Email:</strong> <%= lead.email %>
+      <% if lead.phone.present? %>
+        &nbsp;|&nbsp; <strong>Phone:</strong> <%= lead.phone %>
+      <% end %>
+      <% if lead.property_address.present? %>
+        &nbsp;|&nbsp; <strong>Property:</strong> <%= lead.property_address %>
+      <% end %>
     </div>
+    <% if lead.message.present? %>
+      <div class="mt-1 text-gray-700 text-xs"><%= truncate(lead.message, length: 120) %></div>
+    <% end %>
+    <% if lead.created_at %>
+      <div class="text-gray-400 text-xs mt-1">Submitted <%= time_ago_in_words(lead.created_at) %> ago</div>
+    <% end %>
+    <% if lead.contacted_at %>
+      <div class="text-green-600 text-xs mt-1 font-medium">Contacted <%= time_ago_in_words(lead.contacted_at) %> ago</div>
+    <% end %>
   </div>
 
-  <div class="mt-2">
-    <span class="inline-block bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-      <%= lead.property %>
-    </span>
+  <div class="flex flex-row gap-2 mt-2 md:mt-0">
+    <%= button_to "Send Email",
+          send_email_lead_path(lead),
+          method: :post,
+          remote: true,
+          form: { data: { turbo: false } },
+          class: "bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 text-sm",
+          data: { action: "lead#sendEmail" } %>
 
-    <button
-      data-lead-target="button"
-      data-action="click->lead#markContacted"
-      class="ml-4 text-sm text-green-600 hover:underline"
-    >
-      <%= lead.contacted ? "Mark as NOT contacted" : "Mark as contacted" %>
-    </button>
+    <%= button_to "Send SMS",
+          send_sms_lead_path(lead),
+          method: :post,
+          remote: true,
+          form: { data: { turbo: false } },
+          class: "bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm",
+          data: { action: "lead#sendSms" } %>
   </div>
 </div>
