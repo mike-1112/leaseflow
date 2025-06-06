@@ -7,15 +7,15 @@
 >
   <div class="flex-1 min-w-0">
     <div class="font-semibold text-gray-900 truncate">
-      <%= lead.name.presence || "(No Name)" %>
+      <%= lead.full_name.presence || "(No Name)" %>
     </div>
     <div class="text-gray-600 text-sm truncate">
       <strong>Email:</strong> <%= lead.email %>
       <% if lead.phone.present? %>
         &nbsp;|&nbsp; <strong>Phone:</strong> <%= lead.phone %>
       <% end %>
-      <% if lead.property_address.present? %>
-        &nbsp;|&nbsp; <strong>Property:</strong> <%= lead.property_address %>
+      <% if lead.property.present? %>
+        &nbsp;|&nbsp; <strong>Property:</strong> <%= lead.property %>
       <% end %>
     </div>
     <% if lead.message.present? %>
