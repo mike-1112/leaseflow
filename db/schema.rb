@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_07_163513) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_07_164839) do
   create_table "agents", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -57,6 +57,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_07_163513) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "state", default: 0, null: false
+    t.boolean "nt_disclosure", default: false, null: false
+    t.boolean "nsw_disclosure", default: false, null: false
+    t.boolean "vic_disclosure", default: false, null: false
+    t.boolean "qld_disclosure", default: false, null: false
+    t.boolean "sa_disclosure", default: false, null: false
+    t.boolean "wa_disclosure", default: false, null: false
+    t.boolean "act_disclosure", default: false, null: false
+    t.boolean "tas_disclosure", default: false, null: false
     t.index ["lead_id"], name: "index_rental_applications_on_lead_id"
   end
 
