@@ -1,70 +1,70 @@
-<%# Renders a single Lead row with actions for email/SMS contact %>
+<%# --- Lead Card --- %>
 <div
   data-controller="lead"
   data-lead-id-value="<%= lead.id %>"
   data-lead-contacted-at-value="<%= lead.contacted_at.present? %>"
   id="lead_<%= lead.id %>"
-  class="bg-white p-4 rounded shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-gray-200 <%= 'opacity-50 line-through' if lead.contacted_at %>"
+  class="bg-white border border-gray-200 rounded-lg shadow p-5 mb-5 overflow-hidden <%= 'opacity-50 line-through' if lead.contacted_at %>"
 >
-  <div class="flex-1 min-w-0">
-    <div class="font-semibold text-gray-900 truncate">
-      <%= lead.full_name.presence || "(No Name)" %>
-    </div>
-    <div class="text-gray-600 text-sm flex flex-col gap-1">
-      <span class="truncate"><strong>Email:</strong> <%= lead.email %></span>
-      <% if lead.phone.present? %>
-        <span class="truncate"><strong>Phone:</strong> <%= lead.phone %></span>
-      <% end %>
-      <% if lead.property.present? %>
-        <span class="break-words whitespace-normal"><strong>Property:</strong> <%= lead.property %></span>
-      <% end %>
-    </div>
-    <% if lead.created_at %>
-      <div class="text-gray-400 text-xs mt-1">
-        Submitted <%= time_ago_in_words(lead.created_at) %> ago
-      </div>
-    <% end %>
-    <% if lead.contacted_at %>
-      <div class="text-green-600 text-xs mt-1 font-medium">
-        Contacted <%= time_ago_in_words(lead.contacted_at) %> ago
-      </div>
-    <% end %>
-    
-    <div class="mt-2">
-      <button
-        data-lead-target="button"
-        data-action="click->lead#markContacted"
-        class="text-sm text-green-600 hover:underline flex items-center gap-1 px-4 py-2 rounded"
-      >
-        <span data-lead-target="buttonText">
-          <%= lead.contacted_at ? "Mark as NOT contacted" : "Mark as contacted" %>
-        </span>
-        <svg data-lead-target="spinner"
-          class="hidden h-3 w-3 text-green-500 animate-spin"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6z"/>
-        </svg>
-      </button>
-    </div>
+  <!-- Name -->
+  <div class="text-xl font-semibold text-gray-900 break-words">
+    <%= lead.full_name.presence || "(No Name)" %>
   </div>
 
-  <div class="flex flex-row gap-2 mt-2 md:mt-0">
+  <!-- Metadata -->
+  <div class="text-sm text-gray-600 mt-3">
+    <% if lead.email.present? %>
+      <div><span class="font-semibold">Email:</span> <span class="break-all"><%= lead.email %></span></div>
+    <% end %>
+    <% if lead.phone.present? %>
+      <div><span class="font-semibold">Phone:</span> <span class="break-all"><%= lead.phone %></span></div>
+    <% end %>
+    <% if lead.property.present? %>
+      <div><span class="font-semibold">Property:</span> <span class="break-words whitespace-normal"><%= lead.property %></span></div>
+    <% end %>
+    <% if lead.created_at %>
+      <div class="text-xs text-gray-400 mt-1">Submitted <%= time_ago_in_words(lead.created_at) %> ago</div>
+    <% end %>
+    <% if lead.contacted_at %>
+      <div class="text-xs text-green-600 mt-1 font-medium">Contacted <%= time_ago_in_words(lead.contacted_at) %> ago</div>
+    <% end %>
+  </div>
+
+  <!-- Mark as Contacted Button -->
+  <div class="mt-3">
+    <button
+      data-lead-target="button"
+      data-action="click->lead#markContacted"
+      class="block text-green-600 font-medium hover:underline focus:outline-none"
+    >
+      <span data-lead-target="buttonText">
+        <%= lead.contacted_at ? "Mark as NOT contacted" : "Mark as contacted" %>
+      </span>
+      <svg data-lead-target="spinner"
+        class="hidden h-3 w-3 text-green-500 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row gap-2 mt-4">
     <%= button_to "Send Email",
           send_email_lead_path(lead),
           method: :post,
           remote: true,
           form: { data: { turbo: false } },
-          class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm",
+          class: "w-full sm:w-auto bg-indigo-600 text-white px-4 py-2 rounded font-semibold hover:bg-indigo-700 text-sm",
           data: { action: "lead#sendEmail" } %>
-
     <%= button_to "Send SMS",
           send_sms_lead_path(lead),
           method: :post,
           remote: true,
           form: { data: { turbo: false } },
-          class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm",
+          class: "w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded font-semibold hover:bg-green-700 text-sm",
           data: { action: "lead#sendSms" } %>
   </div>
 </div>
