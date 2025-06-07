@@ -7,7 +7,7 @@ class CreateRentalApplications < ActiveRecord::Migration[7.0]
       t.integer :annual_income
       t.string :reference_name
       t.string :reference_contact
-      t.string :status
+      t.string :status, default: "new"
 
       t.timestamps
     end

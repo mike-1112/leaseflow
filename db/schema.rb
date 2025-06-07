@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_06_173640) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_07_153822) do
   create_table "agents", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -46,4 +46,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_173640) do
     t.datetime "contacted_at"
   end
 
+  create_table "rental_applications", force: :cascade do |t|
+    t.integer "lead_id", null: false
+    t.text "rental_history"
+    t.string "employment_status"
+    t.integer "annual_income"
+    t.string "reference_name"
+    t.string "reference_contact"
+    t.string "status", default: "new"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lead_id"], name: "index_rental_applications_on_lead_id"
+  end
+
+  add_foreign_key "rental_applications", "leads"
 end

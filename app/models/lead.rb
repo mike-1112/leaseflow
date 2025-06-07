@@ -1,6 +1,8 @@
 class Lead < ApplicationRecord
   after_create_commit -> { broadcast_prepend_to "leads_list" }
-
+  
+  has_many :rental_applications, dependent: :destroy
+  
   # VALIDATIONS
   validates :full_name,
     presence: true,

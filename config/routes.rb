@@ -22,6 +22,20 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :leads, only: [] do
+    resources :rental_applications, only: [:new, :create]
+  end
+
+  authenticate :agent do
+    resources :rental_applications, only: [:index, :show, :update] do
+      member do
+        patch :mark_in_review
+        patch :approve
+        patch :reject
+      end
+    end
+  end
+
   # Unauthenticated users → sign in
   unauthenticated do
     root to: redirect('/agents/sign_in')
