@@ -10,6 +10,9 @@
                 placeholder: "John Doe",
                 required: true,
                 class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <% if @lead.errors[:full_name].any? %>
+            <div class="text-red-600 text-sm mt-1"><%= @lead.errors[:full_name].first %></div>
+          <% end %>
         </div>
 
         <div>
@@ -18,6 +21,9 @@
                 placeholder: "you@example.com",
                 required: true,
                 class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <% if @lead.errors[:email].any? %>
+            <div class="text-red-600 text-sm mt-1"><%= @lead.errors[:email].first %></div>
+          <% end %>
         </div>
 
         <div>
@@ -26,6 +32,9 @@
                 placeholder: "0412 345 678",
                 required: true,
                 class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <% if @lead.errors[:phone].any? %>
+            <div class="text-red-600 text-sm mt-1"><%= @lead.errors[:phone].first %></div>
+          <% end %>
         </div>
 
         <div>
@@ -34,6 +43,9 @@
                 placeholder: "123 Main St",
                 required: true,
                 class: "mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <% if @lead.errors[:property].any? %>
+            <div class="text-red-600 text-sm mt-1"><%= @lead.errors[:property].first %></div>
+          <% end %>
         </div>
       </div>
 
