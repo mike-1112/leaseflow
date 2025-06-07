@@ -53,6 +53,14 @@ class RentalApplicationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def rental_application_params
-      params.require(:rental_application).permit(:lead_id, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status)
+       params.require(:rental_application).permit(
+        :lead_id, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status, :state,
+        :nt_disclosure, :nsw_disclosure, :vic_disclosure, :qld_disclosure, :sa_disclosure, :wa_disclosure, :act_disclosure, :tas_disclosure
+      )
+    end
+
+    def compliance_partial
+      @rental_application = RentalApplication.new(state: params[:state])
+      render partial: "rental_applications/compliance/#{params[:state] || 'nt'}", locals: { f: view_context.form_builder(@rental_application) }
     end
 end

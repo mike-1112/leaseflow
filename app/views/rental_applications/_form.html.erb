@@ -17,6 +17,20 @@
   </div>
 
   <div class="my-5">
+    <%= form.label :state, "State/Territory (Australia)" %>
+    <%= form.select :state,
+      RentalApplication.states.keys.map { |s| [s.upcase, s] },
+      { prompt: "Select your state/territory" },
+      class: "block w-full border rounded px-3 py-2",
+      data: { action: "change->stateCompliance#refresh" }
+    %>
+  </div>
+  
+  <div data-controller="stateCompliance" data-state-compliance-target="container">
+    <%= render "rental_applications/compliance/nt", f: form %>
+  </div>
+
+  <div class="my-5">
     <%= form.label :rental_history %>
     <%= form.text_area :rental_history, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:rental_history].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:rental_history].any?}] %>
   </div>

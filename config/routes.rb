@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get  '/signin',    to: 'leads#new',    as: :signin
   post '/leads',     to: 'leads#create'
   get  '/signed_up', to: 'leads#thanks', as: :signed_up
+  get "/rental_applications/compliance", to: "rental_applications#compliance_partial"
 
   # Authenticated root → leads#index (dashboard)
   authenticate :agent do
