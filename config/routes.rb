@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :rental_applications
   # Devise for Agent authentication
   devise_for :agents
 
