@@ -4,19 +4,30 @@ class LeadsController < ApplicationController
 
   # GET /leads
   def index
-  query = params[:q].to_s.strip.downcase
+    query = params[:q].to_s.strip.downcase
+    filter = params[:filter] || "all"
+    @current_filter = filter
 
-  if query.present?
+    if query.present?
       term = "%#{query}%"
       base_scope = Lead.where(
         "LOWER(full_name) LIKE :term OR LOWER(email) LIKE :term OR LOWER(property) LIKE :term",
         term: term
       )
+    else
+      base_scope = Lead.all
+    end
+
+    case filter
+    when "uncontacted"
+      @uncontacted_leads = base_scope.where(contacted_at: nil).order(created_at: :desc)
+      @contacted_leads = []
+    when "contacted"
+      @uncontacted_leads = []
+      @contacted_leads = base_scope.where.not(contacted_at: nil).order(contacted_at: :desc)
+    else # "all"
       @uncontacted_leads = base_scope.where(contacted_at: nil).order(created_at: :desc)
       @contacted_leads = base_scope.where.not(contacted_at: nil).order(contacted_at: :desc)
-    else
-      @uncontacted_leads = Lead.where(contacted_at: nil).order(created_at: :desc)
-      @contacted_leads = Lead.where.not(contacted_at: nil).order(contacted_at: :desc)
     end
   end
 

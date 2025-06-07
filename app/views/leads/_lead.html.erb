@@ -10,13 +10,13 @@
     <div class="font-semibold text-gray-900 truncate">
       <%= lead.full_name.presence || "(No Name)" %>
     </div>
-    <div class="text-gray-600 text-sm truncate">
-      <strong>Email:</strong> <%= lead.email %>
+    <div class="text-gray-600 text-sm flex flex-col gap-1">
+      <span class="truncate"><strong>Email:</strong> <%= lead.email %></span>
       <% if lead.phone.present? %>
-        &nbsp;|&nbsp; <strong>Phone:</strong> <%= lead.phone %>
+        <span class="truncate"><strong>Phone:</strong> <%= lead.phone %></span>
       <% end %>
       <% if lead.property.present? %>
-        &nbsp;|&nbsp; <strong>Property:</strong> <%= lead.property %>
+        <span class="break-words whitespace-normal"><strong>Property:</strong> <%= lead.property %></span>
       <% end %>
     </div>
     <% if lead.created_at %>
@@ -34,7 +34,7 @@
       <button
         data-lead-target="button"
         data-action="click->lead#markContacted"
-        class="text-sm text-green-600 hover:underline flex items-center gap-1"
+        class="text-sm text-green-600 hover:underline flex items-center gap-1 px-4 py-2 rounded"
       >
         <span data-lead-target="buttonText">
           <%= lead.contacted_at ? "Mark as NOT contacted" : "Mark as contacted" %>
@@ -56,7 +56,7 @@
           method: :post,
           remote: true,
           form: { data: { turbo: false } },
-          class: "bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 text-sm",
+          class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm",
           data: { action: "lead#sendEmail" } %>
 
     <%= button_to "Send SMS",
@@ -64,7 +64,7 @@
           method: :post,
           remote: true,
           form: { data: { turbo: false } },
-          class: "bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm",
+          class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm",
           data: { action: "lead#sendSms" } %>
   </div>
 </div>
