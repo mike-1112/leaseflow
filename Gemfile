@@ -67,3 +67,5 @@ gem "importmap-rails"
 gem "twilio-ruby", "~> 7.6"
 
 gem "devise", "~> 4.9"
+
+gem "tailwindcss-rails"
