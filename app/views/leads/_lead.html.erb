@@ -33,9 +33,18 @@
       <button
         data-lead-target="button"
         data-action="click->lead#markContacted"
-        class="text-sm text-green-600 hover:underline"
+        class="text-sm text-green-600 hover:underline flex items-center gap-1"
       >
-        <%= lead.contacted_at ? "Mark as NOT contacted" : "Mark as contacted" %>
+        <span data-lead-target="buttonText">
+          <%= lead.contacted_at ? "Mark as NOT contacted" : "Mark as contacted" %>
+        </span>
+        <svg data-lead-target="spinner"
+          class="hidden h-3 w-3 text-green-500 animate-spin"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6z"/>
+        </svg>
       </button>
     </div>
   </div>
