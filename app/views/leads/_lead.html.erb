@@ -2,6 +2,7 @@
 <div
   data-controller="lead"
   data-lead-id-value="<%= lead.id %>"
+  data-lead-contacted-at-value="<%= lead.contacted_at.present? %>"
   id="lead_<%= lead.id %>"
   class="bg-white p-4 rounded shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-gray-200 <%= 'opacity-50 line-through' if lead.contacted_at %>"
 >

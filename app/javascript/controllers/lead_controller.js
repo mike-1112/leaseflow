@@ -12,7 +12,7 @@ export default class extends Controller {
     this.buttonTextTarget.classList.add("hidden");
     this.spinnerTarget.classList.remove("hidden");
 
-    const contacted = this.element.classList.contains("opacity-50");
+    const contacted = this.element.dataset.leadContactedAtValue === "true";
     const endpoint = contacted ? "mark_uncontacted" : "mark_contacted";
     const url = `/leads/${this.idValue}/${endpoint}`;
 
@@ -27,11 +27,13 @@ export default class extends Controller {
       if (response.ok) {
         if (contacted) {
           this.element.classList.remove("opacity-50", "line-through");
-          this.buttonTarget.textContent = "Mark as contacted";
+          this.element.dataset.leadContactedAtValue = "false";
+          this.buttonTextTarget.textContent = "Mark as contacted";
           window.showToast && window.showToast({ type: "success", message: "Marked as NOT contacted!" });
         } else {
           this.element.classList.add("opacity-50", "line-through");
-          this.buttonTarget.textContent = "Mark as NOT contacted";
+          this.element.dataset.leadContactedAtValue = "true";
+          this.buttonTextTarget.textContent = "Mark as NOT contacted";
           window.showToast && window.showToast({ type: "success", message: "Marked as contacted!" });
         }
       } else {
