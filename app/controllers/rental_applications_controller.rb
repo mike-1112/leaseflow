@@ -61,6 +61,6 @@ class RentalApplicationsController < ApplicationController
 
     def compliance_partial
       @rental_application = RentalApplication.new(state: params[:state])
-      render partial: "rental_applications/compliance/#{params[:state] || 'nt'}", locals: { f: view_context.form_builder(@rental_application) }
+      render partial: "rental_applications/compliance/#{params[:state]}", locals: { f: view_context.form_builder(@rental_application) }
     end
 end

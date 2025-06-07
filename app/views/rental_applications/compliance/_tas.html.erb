@@ -1,4 +1,10 @@
 <div>
   <%= f.check_box :tas_disclosure %>
-  <%= f.label :tas_disclosure, "I acknowledge that I have received the Tasmanian tenant information statement." %>
+  <%= f.label :tas_disclosure, "I acknowledge that I have received and read the Tasmanian tenant information statement." %>
+  <div class="disclosure-info">
+    <p>
+      Please read the official information for TAS tenants:
+      <a href="https://www.cbos.tas.gov.au/topics/housing/renting" target="_blank" rel="noopener">Tasmania Renting Information</a>
+    </p>
+  </div>
 </div>

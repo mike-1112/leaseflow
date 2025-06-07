@@ -19,14 +19,15 @@
   <div class="my-5">
     <%= form.label :state, "State/Territory (Australia)" %>
     <%= form.select :state,
-      RentalApplication.states.keys.map { |s| [s.upcase, s] },
-      { prompt: "Select your state/territory" },
-      class: "block w-full border rounded px-3 py-2",
-      data: { action: "change->stateCompliance#refresh" }
+        RentalApplication.states.keys.map { |s| [s.upcase, s] },
+        { prompt: "Select your state/territory" },
+        class: "block w-full border rounded px-3 py-2",
+        data: { action: "change->state-compliance#refresh" }
     %>
   </div>
-  
-  <div data-controller="stateCompliance" data-state-compliance-target="container">
+  <div data-controller="state-compliance" data-state-compliance-target="container"></div>
+
+  <div data-controller="state-compliance" data-state-compliance-target="container">
     <%= render "rental_applications/compliance/nt", f: form %>
   </div>
 
