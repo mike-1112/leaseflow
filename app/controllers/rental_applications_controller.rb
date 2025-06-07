@@ -60,7 +60,8 @@ class RentalApplicationsController < ApplicationController
     end
 
     def compliance_partial
-      @rental_application = RentalApplication.new(state: params[:state])
-      render partial: "rental_applications/compliance/#{params[:state]}", locals: { f: view_context.form_builder(@rental_application) }
+      state = params[:state]
+      checkbox_html = render_to_string(partial: "rental_applications/compliance/#{state}_field")
+      render plain: checkbox_html
     end
 end

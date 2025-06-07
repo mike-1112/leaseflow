@@ -2,7 +2,6 @@
   <% if rental_application.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
       <h2><%= pluralize(rental_application.errors.count, "error") %> prohibited this rental_application from being saved:</h2>
-
       <ul class="list-disc ml-6">
         <% rental_application.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -13,10 +12,10 @@
 
   <div class="my-5">
     <%= form.label :lead_id %>
-    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:lead_id].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:lead_id].any?}] %>
+    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:lead_id].none?, "border-red-400": rental_application.errors[:lead_id].any?}] %>
   </div>
 
-  <div class="my-5">
+  <div class="my-5" data-controller="state-compliance">
     <%= form.label :state, "State/Territory (Australia)" %>
     <%= form.select :state,
         RentalApplication.states.keys.map { |s| [s.upcase, s] },
@@ -25,40 +24,46 @@
         data: { action: "change->state-compliance#refresh" }
     %>
   </div>
-  <div data-controller="state-compliance" data-state-compliance-target="container"></div>
 
-  <div data-controller="state-compliance" data-state-compliance-target="container">
-    <%= render "rental_applications/compliance/nt", f: form %>
+  <div id="compliance-disclosures" aria-live="polite">
+    <% RentalApplication.states.keys.each do |state| %>
+      <div
+        class="compliance-section"
+        data-state="<%= state %>"
+        style="display: none;">
+        <%= render "rental_applications/compliance/#{state}", f: form %>
+      </div>
+    <% end %>
   </div>
 
   <div class="my-5">
     <%= form.label :rental_history %>
-    <%= form.text_area :rental_history, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:rental_history].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:rental_history].any?}] %>
+    <%= form.text_area :rental_history, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:rental_history].none?, "border-red-400": rental_application.errors[:rental_history].any?}] %>
   </div>
 
   <div class="my-5">
     <%= form.label :employment_status %>
-    <%= form.text_field :employment_status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:employment_status].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:employment_status].any?}] %>
+    <%= form.text_field :employment_status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:employment_status].none?, "border-red-400": rental_application.errors[:employment_status].any?}] %>
   </div>
 
   <div class="my-5">
     <%= form.label :annual_income %>
-    <%= form.number_field :annual_income, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:annual_income].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:annual_income].any?}] %>
+    <%= form.number_field :annual_income, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:annual_income].none?, "border-red-400": rental_application.errors[:annual_income].any?}] %>
   </div>
 
   <div class="my-5">
     <%= form.label :reference_name %>
-    <%= form.text_field :reference_name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:reference_name].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:reference_name].any?}] %>
+    <%= form.text_field :reference_name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:reference_name].none?, "border-red-400": rental_application.errors[:reference_name].any?}] %>
   </div>
 
   <div class="my-5">
     <%= form.label :reference_contact %>
-    <%= form.text_field :reference_contact, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:reference_contact].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:reference_contact].any?}] %>
+    <%= form.text_field :reference_contact, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:reference_contact].none?, "border-red-400": rental_application.errors[:reference_contact].any?}] %>
   </div>
 
   <div class="my-5">
     <%= form.label :status %>
-    <%= form.text_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:status].none?, "border-red-400 focus:outline-red-600": rental_application.errors[:status].any?}] %>
+    <%= form.text_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:status].none?, "border-red-400": rental_application.errors[:status].any?}] %>
   </div>
 
   <div class="inline">
