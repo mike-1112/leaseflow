@@ -16,8 +16,8 @@
     <fieldset class="border-l-4 border-indigo-500 pl-4 space-y-4">
       <legend class="font-semibold text-lg mb-2">Applicant Details</legend>
       <div class="flex flex-col">
-        <%= f.label :lead_id, "Applicant ID", class: "mb-1 font-medium" %>
-        <%= f.text_field :lead_id, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
+        <%= f.label :lead_id, "Applicant", class: "mb-1 font-medium" %>
+        <%= f.collection_select :lead_id, Lead.all, :id, :full_name, { prompt: "Select applicant" }, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:lead_id].any? %>
           <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:lead_id].join(', ') %></span>
         <% end %>
