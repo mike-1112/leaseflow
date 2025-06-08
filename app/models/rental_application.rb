@@ -1,5 +1,5 @@
 class RentalApplication < ApplicationRecord
-  belongs_to :lead
+  #belongs_to :lead
 
   has_one_attached :identity_proof
   has_one_attached :income_proof

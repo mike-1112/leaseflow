@@ -1,4 +1,8 @@
 class RentalApplicationsController < ApplicationController
+  # allow anyone to view the form and submit…
+  skip_before_action :authenticate_agent!, only: [:new, :create]
+  # …but require agent sign-in for everything else
+  before_action :authenticate_agent!, except: [:new, :create]
   before_action :set_rental_application, only: %i[ show edit update destroy ]
 
   # GET /rental_applications
@@ -71,18 +75,4 @@ class RentalApplicationsController < ApplicationController
 
     private
 
-    def rental_application_params
-      params.require(:rental_application).permit(
-        :state,
-        :rental_history,
-        :employment_status,
-        :annual_income,
-        :reference_name,
-        :reference_contact,
-        :accepted_compliance,
-        :accepted_privacy,
-        :identity_proof,
-        :income_proof
-      )
-    end
 end

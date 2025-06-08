@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_08_151343) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_08_154433) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -75,7 +75,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_08_151343) do
   end
 
   create_table "rental_applications", force: :cascade do |t|
-    t.integer "lead_id", null: false
     t.text "rental_history"
     t.string "employment_status"
     t.integer "annual_income"
@@ -95,10 +94,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_08_151343) do
     t.boolean "tas_disclosure", default: false, null: false
     t.string "applicant_name"
     t.string "applicant_email"
-    t.index ["lead_id"], name: "index_rental_applications_on_lead_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "rental_applications", "leads"
 end

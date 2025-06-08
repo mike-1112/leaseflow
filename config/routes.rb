@@ -23,9 +23,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :leads, only: [] do
+  # Public: only allow new/create
     resources :rental_applications, only: [:new, :create]
-  end
+
+  # Agents: full CRUD
+    authenticate :agent do
+      resources :rental_applications, only: [:index, :show, :edit, :update, :destroy]
+    end
 
   authenticate :agent do
     resources :rental_applications, only: [:index, :show, :update] do
