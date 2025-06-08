@@ -98,10 +98,20 @@
     </fieldset>
 
     <div class="flex flex-col">
-      <%= f.label :status, class: "mb-1 font-medium" %>
-      <%= f.text_field :status, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
-      <% if f.object.errors[:status].any? %>
-        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:status].join(', ') %></span>
+      <%= f.label :identity_proof, "Upload proof of identity (optional)" %>
+      <%= f.file_field :identity_proof, accept: "image/png,image/jpg,image/jpeg,application/pdf",
+          class: "block w-full border rounded px-3 py-2" %>
+      <% if f.object.errors[:identity_proof].any? %>
+        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:identity_proof].join(', ') %></span>
+      <% end %>
+    </div>
+
+    <div class="flex flex-col mt-4">
+      <%= f.label :income_proof, "Upload proof of income (optional)" %>
+      <%= f.file_field :income_proof, accept: "application/pdf",
+          class: "block w-full border rounded px-3 py-2" %>
+      <% if f.object.errors[:income_proof].any? %>
+        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:income_proof].join(', ') %></span>
       <% end %>
     </div>
 

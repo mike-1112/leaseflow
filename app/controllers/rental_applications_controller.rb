@@ -64,4 +64,21 @@ class RentalApplicationsController < ApplicationController
       checkbox_html = render_to_string(partial: "rental_applications/compliance/#{state}_field")
       render plain: checkbox_html
     end
+
+    private
+
+    def rental_application_params
+      params.require(:rental_application).permit(
+        :state,
+        :rental_history,
+        :employment_status,
+        :annual_income,
+        :reference_name,
+        :reference_contact,
+        :accepted_compliance,
+        :accepted_privacy,
+        :identity_proof,
+        :income_proof
+      )
+    end
 end

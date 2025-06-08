@@ -9,6 +9,17 @@
 
   <%= render @rental_application %>
 
+  <% if @rental_application.identity_proof.attached? %>
+    <p>
+      <%= link_to "Download Identity Proof", rails_blob_path(@rental_application.identity_proof, disposition: "attachment"), class: "text-indigo-600 hover:underline" %>
+    </p>
+  <% end %>
+  <% if @rental_application.income_proof.attached? %>
+    <p>
+      <%= link_to "Download Income Proof", rails_blob_path(@rental_application.income_proof, disposition: "attachment"), class: "text-indigo-600 hover:underline" %>
+    </p>
+  <% end %>
+
   <%= link_to "Edit this rental application", edit_rental_application_path(@rental_application), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= link_to "Back to rental applications", rental_applications_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= button_to "Destroy this rental application", @rental_application, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
