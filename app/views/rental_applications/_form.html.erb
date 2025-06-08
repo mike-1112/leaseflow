@@ -11,8 +11,10 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :lead_id %>
-    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": rental_application.errors[:lead_id].none?, "border-red-400": rental_application.errors[:lead_id].any?}] %>
+    <%= form.label :applicant_name, "Your Name" %>
+    <%= form.text_field :applicant_name %>
+    <%= form.label :applicant_email, "Your Email" %>
+    <%= form.email_field :applicant_email %>
   </div>
 
   <div class="my-5" data-controller="state-compliance">
