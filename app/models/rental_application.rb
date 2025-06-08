@@ -4,6 +4,8 @@ class RentalApplication < ApplicationRecord
   has_one_attached :identity_proof
   has_one_attached :income_proof
 
+  validates :applicant_name, presence: true
+  validates :applicant_email, presence: true
   enum state: { nt: 0, nsw: 1, vic: 2, qld: 3, sa: 4, wa: 5, act: 6, tas: 7 }
   validates :state, presence: true
 

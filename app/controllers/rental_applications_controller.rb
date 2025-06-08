@@ -13,6 +13,11 @@ class RentalApplicationsController < ApplicationController
   # GET /rental_applications/new
   def new
     @rental_application = RentalApplication.new
+    if params[:lead_id]
+      lead = Lead.find_by(id: params[:lead_id])
+      @rental_application.applicant_name = lead&.name
+      @rental_application.applicant_email = lead&.email
+    end
   end
 
   # GET /rental_applications/1/edit
@@ -22,11 +27,10 @@ class RentalApplicationsController < ApplicationController
   # POST /rental_applications
   def create
     @rental_application = RentalApplication.new(rental_application_params)
-
     if @rental_application.save
-      redirect_to @rental_application, notice: "Rental application was successfully created."
+      redirect_to @rental_application, notice: "Application submitted!"
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
@@ -54,7 +58,7 @@ class RentalApplicationsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def rental_application_params
       params.require(:rental_application).permit(
-        :lead_id, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status, :state,
+        :applicant_name, :applicant_email, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status, :state,
         :nt_disclosure, :nsw_disclosure, :vic_disclosure, :qld_disclosure, :sa_disclosure, :wa_disclosure, :act_disclosure, :tas_disclosure
       )
     end

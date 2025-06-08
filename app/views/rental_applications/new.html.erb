@@ -2,6 +2,24 @@
   <h1 class="text-2xl font-bold mb-4">Rental Application</h1>
 
   <%= form_with(model: @rental_application, local: true, html: { class: "space-y-6" }, data: { controller: "rental-form" }) do |f| %>
+    <fieldset class="border-l-4 border-indigo-500 pl-4 space-y-4">
+      <legend class="font-semibold text-lg mb-2">Applicant Details</legend>
+      <div class="flex flex-col">
+        <%= f.label :applicant_name, "Your Name", class: "mb-1 font-medium" %>
+        <%= f.text_field :applicant_name, required: true, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
+        <% if f.object.errors[:applicant_name].any? %>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:applicant_name].join(', ') %></span>
+        <% end %>
+      </div>
+      <div class="flex flex-col">
+        <%= f.label :applicant_email, "Your Email", class: "mb-1 font-medium" %>
+        <%= f.email_field :applicant_email, required: true, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
+        <% if f.object.errors[:applicant_email].any? %>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:applicant_email].join(', ') %></span>
+        <% end %>
+      </div>
+    </fieldset>
+    
     <% if @rental_application.errors.any? %>
       <div class="bg-red-50 text-red-700 px-4 py-3 rounded mb-4">
         <strong><%= pluralize(@rental_application.errors.count, "error") %> prohibited this application from being saved:</strong>
@@ -16,8 +34,6 @@
     <fieldset class="border-l-4 border-indigo-500 pl-4 space-y-4">
       <legend class="font-semibold text-lg mb-2">Applicant Details</legend>
       <div class="flex flex-col">
-        <%= f.label :lead_id, "Applicant", class: "mb-1 font-medium" %>
-        <%= f.collection_select :lead_id, Lead.all, :id, :full_name, { prompt: "Select applicant" }, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:lead_id].any? %>
           <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:lead_id].join(', ') %></span>
         <% end %>
@@ -49,7 +65,7 @@
         <% end %>
       </div>
     </fieldset>
-
+    
     <fieldset class="border-l-4 border-indigo-500 pl-4 space-y-4">
       <legend class="font-semibold text-lg mb-2">Rental History</legend>
       <div class="flex flex-col">
