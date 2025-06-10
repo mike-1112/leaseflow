@@ -6,6 +6,7 @@ class RentalApplication < ApplicationRecord
 
   # Use 'pending' instead of 'new' to avoid enum conflict with Ruby's 'new' method
   enum status: { pending: 0, in_review: 1, approved: 2, rejected: 3 }
+  enum state: {  nsw: 0, vic: 1, qld: 2, wa: 3, sa: 4, tas: 5, act: 6, nt: 7}
 
   validates :applicant_name, :applicant_email, :state,
             :rental_history, :employment_status, :annual_income,
