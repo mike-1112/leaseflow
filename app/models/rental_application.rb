@@ -4,18 +4,19 @@ class RentalApplication < ApplicationRecord
   has_one_attached :identity_proof
   has_one_attached :income_proof
 
-  enum status: { new: 0, in_review: 1, approved: 2, rejected: 3 }
+  # Use 'pending' instead of 'new' to avoid enum conflict with Ruby's 'new' method
+  enum status: { pending: 0, in_review: 1, approved: 2, rejected: 3 }
 
   validates :applicant_name, :applicant_email, :state,
-          :rental_history, :employment_status, :annual_income,
-          :reference_name, :reference_contact,
-          :accepted_compliance, :accepted_privacy, presence: true
+            :rental_history, :employment_status, :annual_income,
+            :reference_name, :reference_contact,
+            :accepted_compliance, :accepted_privacy, presence: true
 
-validates :applicant_email, format: { with: URI::MailTo::EMAIL_REGEXP }
-validates :annual_income, numericality: { only_integer: true, greater_than: 0 }
+  validates :applicant_email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :annual_income, numericality: { only_integer: true, greater_than: 0 }
 
-validates :accepted_compliance, acceptance: true
-validates :accepted_privacy,    acceptance: true
+  validates :accepted_compliance, acceptance: true
+  validates :accepted_privacy,    acceptance: true
 
   validates :nt_disclosure,  acceptance: true, if: :nt?
   validates :nsw_disclosure, acceptance: true, if: :nsw?
