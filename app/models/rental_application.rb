@@ -1,13 +1,21 @@
 class RentalApplication < ApplicationRecord
-  #belongs_to :lead
+  belongs_to :lead, optional: true
 
   has_one_attached :identity_proof
   has_one_attached :income_proof
 
-  validates :applicant_name, presence: true
-  validates :applicant_email, presence: true
-  enum state: { nt: 0, nsw: 1, vic: 2, qld: 3, sa: 4, wa: 5, act: 6, tas: 7 }
-  validates :state, presence: true
+  enum status: { new: 0, in_review: 1, approved: 2, rejected: 3 }
+
+  validates :applicant_name, :applicant_email, :state,
+          :rental_history, :employment_status, :annual_income,
+          :reference_name, :reference_contact,
+          :accepted_compliance, :accepted_privacy, presence: true
+
+validates :applicant_email, format: { with: URI::MailTo::EMAIL_REGEXP }
+validates :annual_income, numericality: { only_integer: true, greater_than: 0 }
+
+validates :accepted_compliance, acceptance: true
+validates :accepted_privacy,    acceptance: true
 
   validates :nt_disclosure,  acceptance: true, if: :nt?
   validates :nsw_disclosure, acceptance: true, if: :nsw?

@@ -7,7 +7,11 @@ class RentalApplicationsController < ApplicationController
 
   # GET /rental_applications
   def index
-    @rental_applications = RentalApplication.all
+    @rental_applications = if params[:status].present?
+      RentalApplication.where(status: params[:status])
+    else
+      RentalApplication.all
+    end.page(params[:page]).per(20)
   end
 
   # GET /rental_applications/1
@@ -16,11 +20,13 @@ class RentalApplicationsController < ApplicationController
 
   # GET /rental_applications/new
   def new
-    @rental_application = RentalApplication.new
+  @rental_application = RentalApplication.new
     if params[:lead_id]
       lead = Lead.find_by(id: params[:lead_id])
-      @rental_application.applicant_name = lead&.name
-      @rental_application.applicant_email = lead&.email
+      @rental_application.assign_attributes(
+        applicant_name: lead.full_name,
+        applicant_email: lead.email
+      ) if lead
     end
   end
 
@@ -32,6 +38,15 @@ class RentalApplicationsController < ApplicationController
   def create
     @rental_application = RentalApplication.new(rental_application_params)
     if @rental_application.save
+      RentalApplicationMailer.confirmation_email(@rental_application).deliver_later
+    begin
+        TwilioService.new.send_sms(
+          to: @rental_application.applicant_phone,
+          body: "Thanks for applying! We’ve received your application and will be in touch soon."
+        )
+      rescue => e
+        Rails.logger.error "SMS failed: #{e.message}"
+      end
       redirect_to @rental_application, notice: "Application submitted!"
     else
       render :new
