@@ -17,7 +17,7 @@
         </h2>
         <p class="text-sm text-gray-600">Submitted <%= time_ago_in_words(application.created_at) %> ago</p>
         <span data-rental-application-target="badge" class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mt-2">
-          <%= application.status.titleize %>
+          <%= application.status ? application.status.titleize : "Unknown" %>
         </span>
       </div>
       <div class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0"
