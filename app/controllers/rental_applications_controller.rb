@@ -68,6 +68,30 @@ class RentalApplicationsController < ApplicationController
     redirect_to rental_applications_url, notice: "Rental application was successfully destroyed.", status: :see_other
   end
 
+  def mark_in_review
+    if @rental_application.update(status: :in_review)
+      render json: {status: "ok"}
+    else
+      render json: {error: "Unable to update"}, status: :unprocessable_entity
+    end
+  end
+
+  def approve
+    if @rental_application.update(status: :approved)
+      render json: {status: "ok"}
+    else
+      render json: {error: "Unable to update"}, status: :unprocessable_entity
+    end
+  end
+
+  def reject
+    if @rental_application.update(status: :rejected)
+      render json: {status: "ok"}
+    else
+      render json: {error: "Unable to update"}, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rental_application
