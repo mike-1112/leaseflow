@@ -3,7 +3,7 @@ class RentalApplicationsController < ApplicationController
   skip_before_action :authenticate_agent!, only: [:new, :create]
   # …but require agent sign-in for everything else
   before_action :authenticate_agent!, only: [:index, :mark_in_review, :approve, :reject]
-  before_action :set_rental_application, only: %i[ show edit update destroy ]
+  before_action :set_rental_application, only: %i[ show edit update destroy mark_in_review approve reject ]
 
   # GET /rental_applications
   def index

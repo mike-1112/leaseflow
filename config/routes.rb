@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :rental_applications
   # Devise for Agent authentication
   devise_for :agents
 
@@ -8,6 +7,9 @@ Rails.application.routes.draw do
   post '/leads',     to: 'leads#create'
   get  '/signed_up', to: 'leads#thanks', as: :signed_up
   get "/rental_applications/compliance", to: "rental_applications#compliance_partial"
+
+  # Public: only allow new/create
+  resources :rental_applications, only: [:new, :create]
 
   # Authenticated root → leads#index (dashboard)
   authenticate :agent do
@@ -21,27 +23,9 @@ Rails.application.routes.draw do
         post  :send_sms
       end
     end
-  end
 
-  # Public: only allow new/create
-    resources :rental_applications, only: [:new, :create]
-
-  # Agent-facing management (add agent constraints if needed):
-    resources :rental_applications, only: [:index, :update] do
-      member do
-        patch :mark_in_review
-        patch :approve
-        patch :reject
-      end
-    end  
-
-  # Agents: full CRUD
-    authenticate :agent do
-      resources :rental_applications, only: [:index, :show, :edit, :update, :destroy]
-    end
-
-  authenticate :agent do
-    resources :rental_applications, only: [:index, :show, :update] do
+    # Agents: full CRUD + status actions
+    resources :rental_applications, only: [:index, :show, :edit, :update, :destroy] do
       member do
         patch :mark_in_review
         patch :approve
