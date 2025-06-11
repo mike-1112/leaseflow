@@ -1,6 +1,8 @@
+// app/javascript/controllers/rental_application_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static values = { id: Number }
   static targets = ["badge", "inReviewBtn", "approveBtn", "rejectBtn"]
 
   commonHeaders() {
@@ -14,11 +16,13 @@ export default class extends Controller {
     event.preventDefault()
     this.inReviewBtnTarget.disabled = true
     try {
-      const response = await fetch(`/rental_applications/${this.data.get("id")}/mark_in_review`, {
-        method: "PATCH",
-        headers: this.commonHeaders(),
-        body: JSON.stringify({})
-      })
+      const response = await fetch(
+        `/rental_applications/${this.idValue}/mark_in_review`,
+        {
+          method: "PATCH",
+          headers: this.commonHeaders()
+        }
+      )
       if (response.ok) {
         this.badgeTarget.textContent = "In Review"
         this.badgeTarget.className = "inline-block px-2 py-1 rounded bg-yellow-100 text-yellow-800 text-xs"
@@ -37,11 +41,13 @@ export default class extends Controller {
     event.preventDefault()
     this.approveBtnTarget.disabled = true
     try {
-      const response = await fetch(`/rental_applications/${this.data.get("id")}/approve`, {
-        method: "PATCH",
-        headers: this.commonHeaders(),
-        body: JSON.stringify({})
-      })
+      const response = await fetch(
+        `/rental_applications/${this.idValue}/approve`,
+        {
+          method: "PATCH",
+          headers: this.commonHeaders()
+        }
+      )
       if (response.ok) {
         this.badgeTarget.textContent = "Approved"
         this.badgeTarget.className = "inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs"
@@ -60,11 +66,13 @@ export default class extends Controller {
     event.preventDefault()
     this.rejectBtnTarget.disabled = true
     try {
-      const response = await fetch(`/rental_applications/${this.data.get("id")}/reject`, {
-        method: "PATCH",
-        headers: this.commonHeaders(),
-        body: JSON.stringify({})
-      })
+      const response = await fetch(
+        `/rental_applications/${this.idValue}/reject`,
+        {
+          method: "PATCH",
+          headers: this.commonHeaders()
+        }
+      )
       if (response.ok) {
         this.badgeTarget.textContent = "Rejected"
         this.badgeTarget.className = "inline-block px-2 py-1 rounded bg-red-100 text-red-800 text-xs"

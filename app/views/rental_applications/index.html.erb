@@ -5,7 +5,8 @@
   <% end %>
 </nav>
 
-<%= link_to "New Application", new_rental_application_path, class: "inline-block mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %>
+<%= link_to "New Application", new_rental_application_path,
+      class: "inline-block mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %>
 <h1 class="text-2xl font-bold mb-6 text-center">Review Applications</h1>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full">
@@ -13,25 +14,33 @@
     <div class="bg-white border rounded shadow p-4 flex flex-col justify-between break-words max-w-full">
       <div>
         <h2 class="text-lg font-semibold break-words">
-          <%= link_to application.lead&.full_name || application.applicant_name, rental_application_path(application) %>
+          <%= link_to application.lead&.full_name || application.applicant_name,
+                      rental_application_path(application) %>
         </h2>
-        <p class="text-sm text-gray-600">Submitted <%= time_ago_in_words(application.created_at) %> ago</p>
-        <span data-rental-application-target="badge" class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mt-2">
-          <%= application.status ? application.status.titleize : "Unknown" %>
+        <p class="text-sm text-gray-600">
+          Submitted <%= time_ago_in_words(application.created_at) %> ago
+        </p>
+        <span data-rental-application-target="badge"
+              class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mt-2">
+          <%= application.status.present? ? application.status.titleize : "Unknown" %>
         </span>
       </div>
+
       <div class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0"
            data-controller="rental-application"
            data-rental-application-id-value="<%= application.id %>">
-        <button data-rental-application-target="inReviewBtn" data-action="click->rental-application#markInReview"
+        <button data-rental-application-target="inReviewBtn"
+                data-action="click->rental-application#markInReview"
                 class="flex-1 bg-yellow-500 text-white px-3 py-1 rounded transition hover:bg-yellow-600">
           In Review
         </button>
-        <button data-rental-application-target="approveBtn" data-action="click->rental-application#approve"
+        <button data-rental-application-target="approveBtn"
+                data-action="click->rental-application#approve"
                 class="flex-1 bg-green-500 text-white px-3 py-1 rounded transition hover:bg-green-600">
           Approve
         </button>
-        <button data-rental-application-target="rejectBtn" data-action="click->rental-application#reject"
+        <button data-rental-application-target="rejectBtn"
+                data-action="click->rental-application#reject"
                 class="flex-1 bg-red-500 text-white px-3 py-1 rounded transition hover:bg-red-600">
           Reject
         </button>
