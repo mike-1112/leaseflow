@@ -2,7 +2,7 @@ class RentalApplicationsController < ApplicationController
   # allow anyone to view the form and submit…
   skip_before_action :authenticate_agent!, only: [:new, :create]
   # …but require agent sign-in for everything else
-  before_action :authenticate_agent!, except: [:new, :create]
+  before_action :authenticate_agent!, only: [:index, :mark_in_review, :approve, :reject]
   before_action :set_rental_application, only: %i[ show edit update destroy ]
 
   # GET /rental_applications
@@ -78,7 +78,8 @@ class RentalApplicationsController < ApplicationController
     def rental_application_params
       params.require(:rental_application).permit(
         :applicant_name, :applicant_email, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status, :state,
-        :nt_disclosure, :nsw_disclosure, :vic_disclosure, :qld_disclosure, :sa_disclosure, :wa_disclosure, :act_disclosure, :tas_disclosure
+        :nt_disclosure, :nsw_disclosure, :vic_disclosure, :qld_disclosure, :sa_disclosure, :wa_disclosure, :act_disclosure, :tas_disclosure,
+        :accepted_compliance, :accepted_privacy
       )
     end
 
@@ -87,7 +88,5 @@ class RentalApplicationsController < ApplicationController
       checkbox_html = render_to_string(partial: "rental_applications/compliance/#{state}_field")
       render plain: checkbox_html
     end
-
-    private
 
 end

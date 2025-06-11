@@ -26,6 +26,15 @@ Rails.application.routes.draw do
   # Public: only allow new/create
     resources :rental_applications, only: [:new, :create]
 
+  # Agent-facing management (add agent constraints if needed):
+    resources :rental_applications, only: [:index, :update] do
+      member do
+        patch :mark_in_review
+        patch :approve
+        patch :reject
+      end
+    end  
+
   # Agents: full CRUD
     authenticate :agent do
       resources :rental_applications, only: [:index, :show, :edit, :update, :destroy]

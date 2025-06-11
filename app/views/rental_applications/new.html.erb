@@ -52,7 +52,7 @@
           <div
             class="compliance-section"
             data-state="<%= state %>"
-            style="display: none;">
+            style="<%= f.object.state == state ? '' : 'display: none;' %>">
             <div class="max-h-48 overflow-y-auto border p-3 rounded mb-4 bg-gray-50">
               <%= render "rental_applications/compliance/#{state}", f: f %>
             </div>

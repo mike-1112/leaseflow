@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_10_162150) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_10_162745) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -94,6 +94,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_10_162150) do
     t.boolean "tas_disclosure", default: false, null: false
     t.string "applicant_name"
     t.string "applicant_email"
+    t.boolean "accepted_compliance"
+    t.boolean "accepted_privacy"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
