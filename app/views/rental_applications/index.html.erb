@@ -1,4 +1,6 @@
 <nav class="flex space-x-2 mb-4">
+  <%= link_to "All", rental_applications_path,
+        class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status].blank?}" %>
   <% %w[new in_review approved rejected].each do |status| %>
     <%= link_to status.titleize, rental_applications_path(status: status),
           class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status] == status}" %>
