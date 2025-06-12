@@ -1,4 +1,3 @@
-// app/javascript/controllers/rental_application_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
@@ -13,6 +12,7 @@ export default class extends Controller {
   }
 
   async markInReview(event) {
+    console.log("idValue:", this.idValue);
     event.preventDefault()
     this.inReviewBtnTarget.disabled = true
     try {
@@ -38,6 +38,7 @@ export default class extends Controller {
   }
 
   async approve(event) {
+    console.log("idValue:", this.idValue);
     event.preventDefault()
     this.approveBtnTarget.disabled = true
     try {
@@ -63,6 +64,7 @@ export default class extends Controller {
   }
 
   async reject(event) {
+    console.log("idValue:", this.idValue);
     event.preventDefault()
     this.rejectBtnTarget.disabled = true
     try {
@@ -88,22 +90,8 @@ export default class extends Controller {
   }
 
   showToast(message, type) {
-    const toast = document.getElementById("toast");
-    if (!toast) return;
-    toast.textContent = message;
-    const color = type === "success" ? "green" : "red";
-    toast.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded shadow-lg text-white bg-${color}-600 opacity-0 transition-opacity duration-300`;
-    toast.classList.remove("hidden");
-    setTimeout(() => {
-      toast.classList.add("opacity-100");
-      toast.classList.remove("opacity-0");
-    }, 10);
-    setTimeout(() => {
-      toast.classList.remove("opacity-100");
-      toast.classList.add("opacity-0");
-      setTimeout(() => {
-        toast.classList.add("hidden");
-      }, 300);
-    }, 3000);
+    if (window.showToast) {
+      window.showToast({ type: type, message: message, duration: 3000 });
+    }
   }
 }
