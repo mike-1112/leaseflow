@@ -88,12 +88,22 @@ export default class extends Controller {
   }
 
   showToast(message, type) {
-    const toast = document.createElement("div")
-    toast.textContent = message
-    toast.className = `fixed top-5 right-5 px-4 py-2 rounded shadow-lg z-50 text-white font-semibold ${
-      type === "success" ? "bg-green-600" : "bg-red-600"
-    }`
-    document.body.appendChild(toast)
-    setTimeout(() => toast.remove(), 2500)
+    const toast = document.getElementById("toast");
+    if (!toast) return;
+    toast.textContent = message;
+    const color = type === "success" ? "green" : "red";
+    toast.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded shadow-lg text-white bg-${color}-600 opacity-0 transition-opacity duration-300`;
+    toast.classList.remove("hidden");
+    setTimeout(() => {
+      toast.classList.add("opacity-100");
+      toast.classList.remove("opacity-0");
+    }, 10);
+    setTimeout(() => {
+      toast.classList.remove("opacity-100");
+      toast.classList.add("opacity-0");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 300);
+    }, 3000);
   }
 }

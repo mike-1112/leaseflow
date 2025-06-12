@@ -7,8 +7,10 @@ class RentalApplicationsController < ApplicationController
 
   # GET /rental_applications
   def index
-    @rental_applications = if params[:status].present?
-      RentalApplication.where(status: params[:status])
+    status_param = params[:status]
+    status_param = "pending" if status_param == "new"
+    @rental_applications = if status_param.present?
+      RentalApplication.where(status: status_param)
     else
       RentalApplication.all
     end.page(params[:page]).per(20)
