@@ -1,7 +1,15 @@
 <div class="max-w-2xl mx-auto p-6 bg-white rounded shadow space-y-6">
   <h1 class="text-2xl font-bold mb-4">Rental Application</h1>
 
-  <%= form_with(model: @rental_application, local: true, html: { class: "space-y-6" }, data: { controller: "rental-form" }) do |f| %>
+  <%= form_with(
+      model: @rental_application,
+      local: false,
+      html: { class: "space-y-6" },
+      data: {
+        controller: "rental-form",
+        action: "turbo:submit-end->rental-form#handleSubmitEnd"
+      }
+    ) do |f| %>
     <%# Hidden field for lead_id if present (for prefill/decoupling) %>
     <%= f.hidden_field :lead_id, value: params[:lead_id] %>
 
