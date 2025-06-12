@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_10_162745) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_12_161219) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -80,7 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_10_162745) do
     t.integer "annual_income"
     t.string "reference_name"
     t.string "reference_contact"
-    t.string "status", default: "0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "state", default: 7, null: false
@@ -96,6 +95,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_10_162745) do
     t.string "applicant_email"
     t.boolean "accepted_compliance"
     t.boolean "accepted_privacy"
+    t.integer "status", default: 0, null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
