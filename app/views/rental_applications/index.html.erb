@@ -29,17 +29,17 @@
       <div class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0"
            data-controller="rental-application"
            data-rental-application-id-value="<%= application.id %>">
-        <button data-rental-application-target="inReviewBtn"
+        <button data-rental-application-target="in-review-btn"
                 data-action="click->rental-application#markInReview"
                 class="flex-1 bg-yellow-500 text-white px-3 py-1 rounded transition hover:bg-yellow-600">
           In Review
         </button>
-        <button data-rental-application-target="approveBtn"
+        <button data-rental-application-target="approve-btn"
                 data-action="click->rental-application#approve"
                 class="flex-1 bg-green-500 text-white px-3 py-1 rounded transition hover:bg-green-600">
           Approve
         </button>
-        <button data-rental-application-target="rejectBtn"
+        <button data-rental-application-target="reject-btn"
                 data-action="click->rental-application#reject"
                 class="flex-1 bg-red-500 text-white px-3 py-1 rounded transition hover:bg-red-600">
           Reject
