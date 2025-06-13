@@ -3,6 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = { id: Number }
   static targets = ["badge", "inReviewBtn", "approveBtn", "rejectBtn"]
+ 
+  connect() {
+    console.log("badge:", this.hasBadgeTarget, "approveBtn:", this.hasApproveBtnTarget, "inReviewBtn:", this.hasInReviewBtnTarget, "rejectBtn:", this.hasRejectBtnTarget);
+  }
 
   commonHeaders() {
     return {
