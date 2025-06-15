@@ -1,2 +1,4 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "controllers"
+import { Application } from "@hotwired/stimulus"
+import RentalApplicationController from "./controllers/rental_application_controller.js"
+window.Stimulus = Application.start()
+application.register("rental-application", RentalApplicationController)
