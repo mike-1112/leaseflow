@@ -41,20 +41,19 @@
         <button data-rental-application-in-review-btn-target
                 data-action="click->rental-application#markInReview"
                 class="flex-1 bg-yellow-500 text-white px-3 py-1 rounded transition hover:bg-yellow-600"
-                <%# Don't hide with display:none; just disable if you want to block %>
-                <%= application.status == 'in_review' ? 'disabled' : '' %>>
+                <%= 'disabled' if application.status == 'in_review' %>>
           In Review
         </button>
         <button data-rental-application-approve-btn-target
                 data-action="click->rental-application#approve"
                 class="flex-1 bg-green-500 text-white px-3 py-1 rounded transition hover:bg-green-600"
-                <%= application.status == 'approved' ? 'disabled' : '' %>>
+                <%= 'disabled' if application.status == 'approved' %>>
           Approve
         </button>
         <button data-rental-application-reject-btn-target
                 data-action="click->rental-application#reject"
                 class="flex-1 bg-red-500 text-white px-3 py-1 rounded transition hover:bg-red-600"
-                <%= application.status == 'rejected' ? 'disabled' : '' %>>
+                <%= 'disabled' if application.status == 'rejected' %>>
           Reject
         </button>
       </div>
