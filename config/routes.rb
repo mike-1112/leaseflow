@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     end
 
     # Agents: full CRUD + status actions
-    resources :rental_applications, only: [:index, :show, :edit, :update, :destroy] do
+    resources :rental_applications do
       member do
         patch :mark_in_review
         patch :approve
