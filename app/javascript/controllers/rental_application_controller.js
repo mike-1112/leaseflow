@@ -5,6 +5,7 @@ export default class extends Controller {
   static targets = ["badge", "inReviewBtn", "approveBtn", "rejectBtn"]
  
   connect() {
+    console.log("rental-application controller connected!", this.element);
     console.log("badge:", this.hasBadgeTarget, "approveBtn:", this.hasApproveBtnTarget, "inReviewBtn:", this.hasInReviewBtnTarget, "rejectBtn:", this.hasRejectBtnTarget);
   }
 
