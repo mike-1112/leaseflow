@@ -7,6 +7,9 @@ export default class extends Controller {
   connect() {
     console.log("rental-application controller connected!", this.element);
     console.log("badge:", this.hasBadgeTarget, "approveBtn:", this.hasApproveBtnTarget, "inReviewBtn:", this.hasInReviewBtnTarget, "rejectBtn:", this.hasRejectBtnTarget);
+    console.log("Rental-application controller connected!", this.element);
+    console.log("All approveBtn targets in this scope:", this.element.querySelectorAll('[data-rental-application-approve-btn-target]'));
+    console.log("hasApproveBtnTarget:", this.hasApproveBtnTarget);
   }
 
   commonHeaders() {
