@@ -1,20 +1,14 @@
 <nav class="flex space-x-2 mb-4">
   <%= link_to "All", rental_applications_path,
         class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status].blank?}" %>
-  <% [
-      ["New",       "new"],
-      ["In Review", "in_review"],
-      ["Approved",  "approved"],
-      ["Rejected",  "rejected"]
-    ].each do |label, status| %>
+  <% [["New","new"],["In Review","in_review"],["Approved","approved"],["Rejected","rejected"]].each do |label,status| %>
     <%= link_to label, rental_applications_path(status: status),
-          class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status] == status}" %>
+          class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status]==status}" %>
   <% end %>
 </nav>
 
 <%= link_to "New Application", new_rental_application_path,
       class: "inline-block mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %>
-
 <h1 class="text-2xl font-bold mb-6 text-center">Review Applications</h1>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full">
@@ -42,21 +36,23 @@
 
       <div class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
         <button
-          data-rental-application-target="in-review-btn"
+          data-rental-application-target="inReviewBtn"
           data-action="click->rental-application#markInReview"
           class="flex-1 bg-yellow-500 text-white px-3 py-1 rounded transition hover:bg-yellow-600"
         >
           In Review
         </button>
+
         <button
-          data-rental-application-target="approve-btn"
+          data-rental-application-target="approveBtn"
           data-action="click->rental-application#approve"
           class="flex-1 bg-green-500 text-white px-3 py-1 rounded transition hover:bg-green-600"
         >
           Approve
         </button>
+
         <button
-          data-rental-application-target="reject-btn"
+          data-rental-application-target="rejectBtn"
           data-action="click->rental-application#reject"
           class="flex-1 bg-red-500 text-white px-3 py-1 rounded transition hover:bg-red-600"
         >
