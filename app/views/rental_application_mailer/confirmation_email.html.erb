@@ -1,7 +1,4 @@
-class RentalApplicationMailer < ApplicationMailer
-  def confirmation_email(application)
-    @application = application
-    mail(to: @application.applicant_email,
-         subject: "Your Rental Application Submission Confirmation")
-  end
-end
+<!-- app/views/rental_application_mailer/confirmation_email.html.erb -->
+<h1>Thanks for your application, <%= @application.applicant_name %>!</h1>
+<p>We’ve received your rental application for <strong><%= @application.property %></strong>.</p>
+<p>We’ll review it and be in touch soon.</p>

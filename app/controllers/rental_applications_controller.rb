@@ -23,14 +23,15 @@ class RentalApplicationsController < ApplicationController
   # GET /rental_applications/new
   def new
   @rental_application = RentalApplication.new
-    if params[:lead_id]
+    if params[:lead_id].present?
       lead = Lead.find_by(id: params[:lead_id])
-      @rental_application.assign_attributes(
-        applicant_name: lead.full_name,
-        applicant_email: lead.email
-      ) if lead
+      if lead
+        @rental_application.applicant_name  = lead.full_name
+        @rental_application.applicant_email = lead.email
+      end
     end
   end
+
 
   # GET /rental_applications/1/edit
   def edit
@@ -103,7 +104,7 @@ class RentalApplicationsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def rental_application_params
       params.require(:rental_application).permit(
-        :applicant_name, :applicant_email, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status, :state,
+        :lead_id, :applicant_name, :applicant_email, :rental_history, :employment_status, :annual_income, :reference_name, :reference_contact, :status, :state,
         :nt_disclosure, :nsw_disclosure, :vic_disclosure, :qld_disclosure, :sa_disclosure, :wa_disclosure, :act_disclosure, :tas_disclosure,
         :accepted_compliance, :accepted_privacy
       )
