@@ -102,4 +102,19 @@ export default class extends Controller {
       window.showToast({ type: type, message: message, duration: 3000 });
     }
   }
+
+    // helper to update the in-card badge
+  updateBadge(text, bgColorClass, textColorClass) {
+    this.badgeTarget.textContent = text
+    this.badgeTarget.className = `inline-block px-2 py-1 rounded ${bgColorClass} ${textColorClass} text-xs`
+  }
+
+  // helper to remove the card if we're in a filtered view
+  removeIfFiltered(newStatus) {
+    const filter = new URLSearchParams(window.location.search).get("status")
+    if (filter && filter !== newStatus) {
+      this.element.remove()
+    }
+  }
+
 }
