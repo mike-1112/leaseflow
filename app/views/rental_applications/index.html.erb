@@ -14,7 +14,7 @@
     All
   </button>
 
-  <% [["New","new"],["In Review","in_review"],["Approved","approved"],["Rejected","rejected"]].each do |label, status| %>
+  <% [["New","new"],["In Review","in_review"],["Approved","approved"],["Rejected","rejected"]].each do |label,status| %>
     <button
       type="button"
       data-action="filter#filter"
@@ -28,7 +28,6 @@
 
 <%= link_to "New Application", new_rental_application_path,
       class: "inline-block mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %>
-
 <h1 class="text-2xl font-bold mb-6 text-center">Review Applications</h1>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-full">
@@ -37,24 +36,20 @@
       class="bg-white border rounded shadow p-4 flex flex-col justify-between break-words max-w-full"
       data-controller="rental-application"
       data-rental-application-id-value="<%= application.id %>"
-      data-rental-application-status="<%= application.status %>"
+      data-rental-application-status="<%= application.status || 'pending' %>"      <!-- ← ADD THIS -->
     >
       <div>
         <h2 class="text-lg font-semibold break-words">
-          <%= link_to(
-                application.lead&.full_name || application.applicant_name,
-                rental_application_path(application)
-              ) %>
+          <%= link_to(application.lead&.full_name || application.applicant_name,
+                      rental_application_path(application)) %>
         </h2>
 
         <%# — show a paper-clip if either file is attached — %>
         <% if application.identity_proof.attached? || application.income_proof.attached? %>
           <% blob = application.identity_proof.attached? ? application.identity_proof : application.income_proof %>
-          <%= link_to(
-                rails_blob_path(blob, disposition: "attachment"),
-                title: "Download attachment",
-                class: "ml-2 text-gray-500 hover:text-gray-700"
-              ) do %>
+          <%= link_to rails_blob_path(blob, disposition: "attachment"),
+                      title: "Download attachment",
+                      class: "ml-2 text-gray-500 hover:text-gray-700" do %>
             📎
           <% end %>
         <% end %>
