@@ -4,15 +4,13 @@
 
   <%= form_with(
         model: @rental_application,
-        local: false,
+        local: true,                        # changed from `false` to `true`
         html: { multipart: true, class: "space-y-6" },
         data: {
           controller: "rental-form",
           action: "turbo:submit-end->rental-form#handleSubmitEnd"
         }
       ) do |f| %>
-    <!-- Hidden field for lead_id if present (for prefill/decoupling) -->
-    <%= f.hidden_field :lead_id, value: params[:lead_id] %>
 
     <!-- Global error messages -->
     <% if @rental_application.errors.any? %>
@@ -34,9 +32,7 @@
         <%= f.label :applicant_name, "Your Name", class: "mb-1 font-medium" %>
         <%= f.text_field :applicant_name, required: true, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:applicant_name].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:applicant_name].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:applicant_name].join(', ') %></span>
         <% end %>
       </div>
 
@@ -44,9 +40,7 @@
         <%= f.label :applicant_email, "Your Email", class: "mb-1 font-medium" %>
         <%= f.email_field :applicant_email, required: true, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:applicant_email].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:applicant_email].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:applicant_email].join(', ') %></span>
         <% end %>
       </div>
     </fieldset>
@@ -62,9 +56,7 @@
               class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200",
               data: { action: "change->state-compliance#refresh" } %>
         <% if f.object.errors[:state].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:state].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:state].join(', ') %></span>
         <% end %>
       </div>
 
@@ -73,8 +65,7 @@
           <div
             class="compliance-section"
             data-state="<%= state %>"
-            style="<%= f.object.state == state ? '' : 'display: none;' %>"
-          >
+            style="<%= f.object.state == state ? '' : 'display: none;' %>">
             <div class="max-h-48 overflow-y-auto border p-3 rounded mb-4 bg-gray-50">
               <%= render "rental_applications/compliance/#{state}", f: f %>
             </div>
@@ -87,9 +78,7 @@
         <%= f.label :accepted_compliance, "I acknowledge and accept the required compliance for my state.", class: "font-medium" %>
       </div>
       <% if f.object.errors[:accepted_compliance].any? %>
-        <span class="text-sm text-red-600 mt-1">
-          <%= f.object.errors[:accepted_compliance].join(', ') %>
-        </span>
+        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:accepted_compliance].join(', ') %></span>
       <% end %>
 
       <div class="flex items-center mt-2">
@@ -97,9 +86,7 @@
         <%= f.label :accepted_privacy, "I have read and accept the privacy policy.", class: "font-medium" %>
       </div>
       <% if f.object.errors[:accepted_privacy].any? %>
-        <span class="text-sm text-red-600 mt-1">
-          <%= f.object.errors[:accepted_privacy].join(', ') %>
-        </span>
+        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:accepted_privacy].join(', ') %></span>
       <% end %>
     </fieldset>
 
@@ -109,9 +96,7 @@
         <%= f.label :rental_history, class: "mb-1 font-medium" %>
         <%= f.text_area :rental_history, rows: 4, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:rental_history].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:rental_history].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:rental_history].join(', ') %></span>
         <% end %>
       </div>
     </fieldset>
@@ -122,18 +107,14 @@
         <%= f.label :employment_status, class: "mb-1 font-medium" %>
         <%= f.text_field :employment_status, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:employment_status].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:employment_status].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:employment_status].join(', ') %></span>
         <% end %>
       </div>
       <div class="flex flex-col">
         <%= f.label :annual_income, class: "mb-1 font-medium" %>
         <%= f.number_field :annual_income, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:annual_income].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:annual_income].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:annual_income].join(', ') %></span>
         <% end %>
       </div>
     </fieldset>
@@ -144,18 +125,14 @@
         <%= f.label :reference_name, class: "mb-1 font-medium" %>
         <%= f.text_field :reference_name, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:reference_name].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:reference_name].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:reference_name].join(', ') %></span>
         <% end %>
       </div>
       <div class="flex flex-col">
         <%= f.label :reference_contact, class: "mb-1 font-medium" %>
         <%= f.text_field :reference_contact, class: "border rounded px-3 py-2 focus:ring focus:ring-indigo-200" %>
         <% if f.object.errors[:reference_contact].any? %>
-          <span class="text-sm text-red-600 mt-1">
-            <%= f.object.errors[:reference_contact].join(', ') %>
-          </span>
+          <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:reference_contact].join(', ') %></span>
         <% end %>
       </div>
     </fieldset>
@@ -166,9 +143,7 @@
             accept: "image/png,image/jpg,image/jpeg,application/pdf",
             class: "block w-full border rounded px-3 py-2" %>
       <% if f.object.errors[:identity_proof].any? %>
-        <span class="text-sm text-red-600 mt-1">
-          <%= f.object.errors[:identity_proof].join(', ') %>
-        </span>
+        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:identity_proof].join(', ') %></span>
       <% end %>
     </div>
 
@@ -178,9 +153,7 @@
             accept: "image/png,image/jpg,image/jpeg,application/pdf",
             class: "block w-full border rounded px-3 py-2" %>
       <% if f.object.errors[:income_proof].any? %>
-        <span class="text-sm text-red-600 mt-1">
-          <%= f.object.errors[:income_proof].join(', ') %>
-        </span>
+        <span class="text-sm text-red-600 mt-1"><%= f.object.errors[:income_proof].join(', ') %></span>
       <% end %>
     </div>
 

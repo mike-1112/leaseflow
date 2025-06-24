@@ -50,7 +50,7 @@ class RentalApplication < ApplicationRecord
           income_proof.byte_size <= 5.megabytes
       errors.add(
         :income_proof,
-        "must be PNG, JPG, JPEG or PDF and under 5 MB"
+        "must be PDF, PNG, JPG or JPEG and under 5 MB"
       )
     end
   end
