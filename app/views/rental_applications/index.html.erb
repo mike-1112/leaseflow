@@ -1,9 +1,28 @@
-<nav class="flex space-x-2 mb-4">
-  <%= link_to "All", rental_applications_path,
-        class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status].blank?}" %>
+<!-- app/views/rental_applications/index.html.erb -->
+
+<nav
+  data-controller="filter"
+  data-filter-status-value="<%= params[:status] %>"
+  class="flex space-x-2 mb-4"
+>
+  <button
+    type="button"
+    data-action="filter#filter"
+    data-filter-status-value=""
+    class="px-4 py-2 rounded-t-lg <%= 'bg-white border-b-0' if params[:status].blank? %>"
+  >
+    All
+  </button>
+
   <% [["New","new"],["In Review","in_review"],["Approved","approved"],["Rejected","rejected"]].each do |label,status| %>
-    <%= link_to label, rental_applications_path(status: status),
-          class: "px-4 py-2 rounded-t-lg #{'bg-white border' if params[:status]==status}" %>
+    <button
+      type="button"
+      data-action="filter#filter"
+      data-filter-status-value="<%= status %>"
+      class="px-4 py-2 rounded-t-lg <%= 'bg-white border-b-0' if params[:status]==status %>"
+    >
+      <%= label %>
+    </button>
   <% end %>
 </nav>
 
@@ -23,9 +42,21 @@
           <%= link_to(application.lead&.full_name || application.applicant_name,
                       rental_application_path(application)) %>
         </h2>
+
+        <%# — show a paper-clip if either file is attached — %>
+        <% if application.identity_proof.attached? || application.income_proof.attached? %>
+          <% blob = application.identity_proof.attached? ? application.identity_proof : application.income_proof %>
+          <%= link_to rails_blob_path(blob, disposition: "attachment"),
+                      title: "Download attachment",
+                      class: "ml-2 text-gray-500 hover:text-gray-700" do %>
+            📎
+          <% end %>
+        <% end %>
+
         <p class="text-sm text-gray-600">
           Submitted <%= time_ago_in_words(application.created_at) %> ago
         </p>
+
         <span
           data-rental-application-target="badge"
           class="inline-block px-2 py-1 rounded text-xs mt-2
@@ -38,7 +69,6 @@
         >
           <%= application.status.present? ? application.status.titleize : "Pending" %>
         </span>
-
       </div>
 
       <div class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
