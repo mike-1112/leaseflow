@@ -3,11 +3,12 @@
 import { application } from "./application"
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
 
-import RentalApplicationController from "./rental_application_controller"
-import FilterController             from "./filter_controller"    // ← import it
-
+// Automatically load all controllers defined in this folder:
 eagerLoadControllersFrom("controllers", application)
 
-// explicitly register both:
+// Manual registrations (optional, but explicit):
+import RentalApplicationController from "./rental_application_controller"
+import FilterController            from "./filter_controller"
+
 application.register("rental-application", RentalApplicationController)
-application.register("filter",             FilterController)
+application.register("filter",            FilterController)

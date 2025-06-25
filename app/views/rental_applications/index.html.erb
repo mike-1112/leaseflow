@@ -36,7 +36,7 @@
       class="bg-white border rounded shadow p-4 flex flex-col justify-between break-words max-w-full"
       data-controller="rental-application"
       data-rental-application-id-value="<%= application.id %>"
-      data-rental-application-status="<%= application.status || 'pending' %>"      <!-- ← ADD THIS -->
+      data-rental-application-status="<%= application.status || 'pending' %>"    <!-- ← new -->
     >
       <div>
         <h2 class="text-lg font-semibold break-words">
@@ -44,7 +44,7 @@
                       rental_application_path(application)) %>
         </h2>
 
-        <%# — show a paper-clip if either file is attached — %>
+        <%# show paper-clip if any attachment %>
         <% if application.identity_proof.attached? || application.income_proof.attached? %>
           <% blob = application.identity_proof.attached? ? application.identity_proof : application.income_proof %>
           <%= link_to rails_blob_path(blob, disposition: "attachment"),
