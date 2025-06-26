@@ -1,7 +1,8 @@
-import { Application } from "@hotwired/stimulus"
-import RentalApplicationController from "./controllers/rental_application_controller"
+// app/javascript/application.js
 
-const application = Application.start()
-window.Stimulus = application
+// 1) Turbo (must come first)
+import "@hotwired/turbo-rails"
 
-application.register("rental-application", RentalApplicationController)
+// 2) Stimulus bootstrap — this will import controllers/index.js,
+//    which starts Stimulus and auto-registers every controller there
+import "./controllers"
