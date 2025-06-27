@@ -2,50 +2,39 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values  = { id: Number }
+  static values = { id: Number }
   static targets = ["badge", "inReviewBtn", "approveBtn", "rejectBtn"]
 
   commonHeaders() {
     return {
       "Content-Type": "application/json",
-      "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+      "X-CSRF-Token": document
+        .querySelector("meta[name='csrf-token']")
+        .content
     }
   }
 
   // — mark In Review —
   async markInReview(event) {
     event.preventDefault()
-
-    // 1) disable & show spinner
     this.inReviewBtnTarget.disabled = true
-    this.inReviewBtnTarget.innerHTML = `
-      <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-      </svg>`
+    this.inReviewBtnTarget.innerHTML = this.spinnerHtml()
 
     try {
-      const res = await fetch(
+      const resp = await fetch(
         `/rental_applications/${this.idValue}/mark_in_review`,
         { method: "PATCH", headers: this.commonHeaders() }
       )
+      if (!resp.ok) throw new Error("Network response not ok")
 
-      if (!res.ok) throw new Error("Failed")
-
-      // 2) update badge
-      this.badgeTarget.textContent  = "In Review"
-      this.badgeTarget.className    = "inline-block px-2 py-1 rounded bg-yellow-100 text-yellow-800 text-xs"
-
-      // 3) restore button label & keep it disabled
-      this.inReviewBtnTarget.innerHTML = "In Review"
-      this.inReviewBtnTarget.disabled  = true
-
-      // 4) if you’re on a filtered tab, remove this card
-      this.removeIfFiltered("in_review")
-
-      this.showToast("Marked as In Review", "success")
+      // 1) update badge
+      this.updateBadge("In Review", "bg-yellow-100", "text-yellow-800")
+      // 2) update data-attribute
+      this.updateStatusData("in_review")
+      // 3) hide/show based on current filter
+      this.applyCurrentFilter("in_review")
+      this.showToast("Marked In Review", "success")
     } catch (e) {
-      // undo spinner, re-enable
       this.inReviewBtnTarget.disabled = false
       this.inReviewBtnTarget.textContent = "In Review"
       this.showToast("Failed to update status", "error")
@@ -53,33 +42,22 @@ export default class extends Controller {
     }
   }
 
-  // — Approve —
+  // — approve —
   async approve(event) {
     event.preventDefault()
-    console.log("→ approve() fired for ID", this.idValue)
-
     this.approveBtnTarget.disabled = true
-    this.approveBtnTarget.innerHTML = `
-      <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-      </svg>`
+    this.approveBtnTarget.innerHTML = this.spinnerHtml()
 
     try {
-      const res = await fetch(
+      const resp = await fetch(
         `/rental_applications/${this.idValue}/approve`,
         { method: "PATCH", headers: this.commonHeaders() }
       )
-      if (!res.ok) throw new Error("Failed")
+      if (!resp.ok) throw new Error("Network response not ok")
 
-      this.badgeTarget.textContent  = "Approved"
-      this.badgeTarget.className    = "inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs"
-
-      this.approveBtnTarget.innerHTML = "Approve"
-      this.approveBtnTarget.disabled  = true
-
-      this.removeIfFiltered("approved")
-
+      this.updateBadge("Approved", "bg-green-100", "text-green-800")
+      this.updateStatusData("approved")
+      this.applyCurrentFilter("approved")
       this.showToast("Application Approved", "success")
     } catch (e) {
       this.approveBtnTarget.disabled = false
@@ -89,32 +67,22 @@ export default class extends Controller {
     }
   }
 
-  // — Reject —
+  // — reject —
   async reject(event) {
     event.preventDefault()
-
     this.rejectBtnTarget.disabled = true
-    this.rejectBtnTarget.innerHTML = `
-      <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-      </svg>`
+    this.rejectBtnTarget.innerHTML = this.spinnerHtml()
 
     try {
-      const res = await fetch(
+      const resp = await fetch(
         `/rental_applications/${this.idValue}/reject`,
         { method: "PATCH", headers: this.commonHeaders() }
       )
-      if (!res.ok) throw new Error("Failed")
+      if (!resp.ok) throw new Error("Network response not ok")
 
-      this.badgeTarget.textContent  = "Rejected"
-      this.badgeTarget.className    = "inline-block px-2 py-1 rounded bg-red-100 text-red-800 text-xs"
-
-      this.rejectBtnTarget.innerHTML = "Reject"
-      this.rejectBtnTarget.disabled  = true
-
-      this.removeIfFiltered("rejected")
-
+      this.updateBadge("Rejected", "bg-red-100", "text-red-800")
+      this.updateStatusData("rejected")
+      this.applyCurrentFilter("rejected")
       this.showToast("Application Rejected", "success")
     } catch (e) {
       this.rejectBtnTarget.disabled = false
@@ -124,14 +92,37 @@ export default class extends Controller {
     }
   }
 
-  // helper: if you’re on a status‐filtered tab, yank the card out
-  removeIfFiltered(statusTab) {
-    const current = this.element.closest("[data-filter-status-value]")?.dataset.filterStatusValue
-    if (current === statusTab) {
-      this.element.remove()
-    }
+  // — helper: update the card’s data-attribute so filter picks it up instantly —
+  updateStatusData(newStatus) {
+    this.element.dataset.rentalApplicationStatus = newStatus
   }
 
+  // — helper: update the badge text + classes —
+  updateBadge(text, bgClass, textClass) {
+    this.badgeTarget.textContent = text
+    this.badgeTarget.className = `inline-block px-2 py-1 rounded ${bgClass} ${textClass} text-xs`
+  }
+
+  // — helper: hide/show this.element based on the currently‐active filter tab —
+  applyCurrentFilter(newStatus) {
+    const nav       = document.querySelector("[data-controller='filter']")
+    const current   = nav?.dataset.filterStatusValue || ""
+    // if no filter is active, leave everything visible
+    if (!current) return
+    // otherwise only show cards matching the active filter
+    this.element.style.display = (current === newStatus ? "" : "none")
+  }
+
+  // — helper: spinner SVG —
+  spinnerHtml() {
+    return `
+      <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+      </svg>`
+  }
+
+  // — helper: toast notification —
   showToast(message, type) {
     const toast = document.createElement("div")
     toast.textContent = message

@@ -20,6 +20,7 @@ export default class extends Controller {
     const btn = event.currentTarget
     const status = btn.dataset.filterStatusValue
     this.highlightTab(btn)
+    this.element.dataset.filterStatusValue = status
     this.filterBy(status)
   }
 
