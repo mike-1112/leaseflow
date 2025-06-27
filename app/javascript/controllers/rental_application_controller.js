@@ -56,6 +56,7 @@ export default class extends Controller {
   // — Approve —
   async approve(event) {
     event.preventDefault()
+    console.log("→ approve() fired for ID", this.idValue)
 
     this.approveBtnTarget.disabled = true
     this.approveBtnTarget.innerHTML = `
