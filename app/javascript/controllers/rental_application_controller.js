@@ -22,7 +22,7 @@ export default class extends Controller {
     event.preventDefault()
 
     // 1) show loading spinner & disable
-    this.inReviewBtnTarget.disabled = true
+    //this.inReviewBtnTarget.disabled = true
     this.inReviewBtnTarget.innerHTML = `
       <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -38,7 +38,8 @@ export default class extends Controller {
         // 2) update badge in‐place
         this.updateBadge("In Review", "bg-yellow-100", "text-yellow-800")
         // 3) if filtered, remove card
-        this.removeIfFiltered("in_review")
+        //this.removeIfFiltered("in_review")
+        this.inReviewBtnTarget.disabled = true
         this.showToast("Marked as In Review", "success")
       } else {
         throw new Error("Request failed")
@@ -55,7 +56,7 @@ export default class extends Controller {
     event.preventDefault()
 
     // 1) show loading spinner & disable
-    this.approveBtnTarget.disabled = true
+    
     this.approveBtnTarget.innerHTML = `
       <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -69,7 +70,8 @@ export default class extends Controller {
       )
       if (response.ok) {
         this.updateBadge("Approved", "bg-green-100", "text-green-800")
-        this.removeIfFiltered("approved")
+        //this.removeIfFiltered("approved")
+        this.approveBtnTarget.disabled = true
         this.showToast("Application Approved", "success")
       } else {
         throw new Error("Request failed")
@@ -86,7 +88,7 @@ export default class extends Controller {
     event.preventDefault()
 
     // 1) show loading spinner & disable
-    this.rejectBtnTarget.disabled = true
+    
     this.rejectBtnTarget.innerHTML = `
       <svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -100,7 +102,8 @@ export default class extends Controller {
       )
       if (response.ok) {
         this.updateBadge("Rejected", "bg-red-100", "text-red-800")
-        this.removeIfFiltered("rejected")
+        //this.removeIfFiltered("rejected")
+        this.rejectBtnTarget.disabled = true
         this.showToast("Application Rejected", "success")
       } else {
         throw new Error("Request failed")
