@@ -9,4 +9,13 @@ class LeadMailer < ApplicationMailer
       subject: "Thanks for inspecting #{@lead.property} – next steps"
     )
   end
+
+  # called from LeadsController#send_email
+  def quick_message(lead)
+    @lead = lead
+    mail(
+      to:      @lead.email,
+      subject: "Thanks for your enquiry!"
+    )
+  end
 end

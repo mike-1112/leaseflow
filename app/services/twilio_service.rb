@@ -21,4 +21,12 @@ class TwilioService
     Rails.logger.error "⚠️ SMS error to #{to}: #{e.message}"
     raise
   end
+
+   # helper for leads
+  def send_lead_sms(lead)
+    send_sms(
+      to:   lead.applicant_phone || lead.phone,
+      body: "Hi #{lead.full_name}, thanks for reaching out. We’ll be in touch shortly!"
+    )
+  end
 end
